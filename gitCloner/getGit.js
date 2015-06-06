@@ -30,22 +30,25 @@ exports.cloneFromGit = function(url,line,snippet){
             user = piecesOfUrl[i];
     }
 
-    if(ls(reposDir+'/'+user+'/'+repo).length==0){
-        mkdir('-p',reposDir+'/'+user+'/'+repo);
-        cd(reposDir+'/'+user+'/');
-        var ret = exec('git clone '+repoUrl);
+    repoPath = [reposDir, user, repo].join('/');
+    if(ls(repoPath).length==0){
+        mkdir('-p', repoPath);
+        var ret = exec('git clone ' + repoUrl + ' ' + repoPath);
         if(ret.code=="0"){
             echo("Yahoooooo!!!! You've cloned your stuff!!!");
-            return 0;
+            return repoPath;
         }
     }else{
+        oldDir = pwd();
         cd(reposDir+'/'+user+'/'+repo);
         var ret = exec('git merge origin master');
         if(ret.code=="0"){
-            return 0;
+            cd(oldDir);
+            return repoPath;
         }
+        cd(oldDir);
     }
-    return -1;
+    return null;
 }
 
 
