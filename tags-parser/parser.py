@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # AngelHack Brooklyn 2015
+import json
 import subprocess
 import sys
 
@@ -30,11 +31,30 @@ class Tag(object):
         return str(self)
 
 
+class SnippetEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Snippet):
+            return obj.to_json()
+        return json.JSONEncoder.default(self, obj)
+
+
 class Snippet(object):
     def __init__(self, filepath, linenum, snippet):
         self.filepath = filepath
         self.linenum = linenum
         self.snippet = snippet
+
+    def to_json(self):
+        """
+        >>> snippet = Snippet('path', 1, 'snippet')
+        >>> snippet.to_json()
+        '{"snippet": "snippet", "linenum": 1, "filepath": "path"}'
+        """
+        return {
+            'filepath': self.filepath,
+            'linenum': self.linenum,
+            'snippet': self.snippet,
+        }
 
     def __str__(self):
         return '(%s)(%s)(%s)' % (
@@ -81,10 +101,10 @@ def get_snippet(tag):
     """A tag has information on the filename,
     and also the line where this tag can be found.
 
-    >>> name = 'parser.py'
-    >>> tag = Tag(name, name, '1;"')
+    >>> name = 'tags-parser/parser.py'
+    >>> tag = Tag(name, name, '2;"')
     >>> get_snippet(tag)
-    (parser.py)(1)(# AngelHack Brooklyn 2015)
+    (tags-parser/parser.py)(2)(# AngelHack Brooklyn 2015)
     """
     path = tag.tagfile
     linenum = tag.linenum
@@ -96,18 +116,18 @@ def get_snippet(tag):
 
 def main(tagname, tagsfile):
     """
-    >>> snippet = main('$.fn.flexAddData', 'sample-tags')
-    >>> snippet[0].filepath
-    'Flexigrid/js/flexigrid.js'
-    >>> snippet[0].linenum
-    1516
-    >>> snippet[0].snippet
-    '$.fn.flexAddData = function (data) { // function to add data to grid'
+    # >>> snippets = main('$.fn.flexAddData', 'Flexigrid')
+    # >>> snippets[0].filepath
+    # 'Flexigrid/js/flexigrid.js'
+    # >>> snippets[0].linenum
+    # 1516
+    # >>> snippets[0].snippet
+    # '$.fn.flexAddData = function (data) { // function to add data to grid'
     """
     tags = make_tags(open(tagsfile))
     candidates = lookup_tagname(tagname, tags)
     snippets = map(get_snippet, candidates)
-    return snippets
+    return json.dumps(snippets, cls=SnippetEncoder)
 
 
 def gen_ctags(repo_path):
