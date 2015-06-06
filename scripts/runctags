@@ -1,0 +1,5 @@
+#/bin/bash
+# scripts are relative to the root dir of this repo
+# so it can find the tags-parser directory no problem
+
+python tags-parser/parser.py $1 $2
