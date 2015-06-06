@@ -1,0 +1,126 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+$.addFlex	Flexigrid/js/flexigrid.js	/^    }$/;"	f
+$.fn.disableSelection	Flexigrid/js/flexigrid.js	/^    if(typeof $.fn.disableSelection != 'function') {$/;"	f
+$.fn.flexAddData	Flexigrid/js/flexigrid.js	/^	}; \/\/end flexToggleCol$/;"	f
+$.fn.flexOptions	Flexigrid/js/flexigrid.js	/^	}; \/\/end flexReload$/;"	f
+$.fn.flexReload	Flexigrid/js/flexigrid.js	/^	}; \/\/end flexigrid$/;"	f
+$.fn.flexSearch	Flexigrid/js/flexigrid.js	/^	}; \/\/end noSelect$/;"	f
+$.fn.flexToggleCol	Flexigrid/js/flexigrid.js	/^	}; \/\/end flexOptions$/;"	f
+$.fn.flexigrid	Flexigrid/js/flexigrid.js	/^	});$/;"	f
+$.fn.noSelect	Flexigrid/js/flexigrid.js	/^	};$/;"	f
+$.fn.selectedRows	Flexigrid/js/flexigrid.js	/^	}; \/\/end flexSearch$/;"	f
+Example4	Flexigrid/demo/index.html	/^            function Example4(com, grid) {$/;"	f
+active_group	Flexigrid/demo/post-json.php	/^	$active_group = 'default';$/;"	v
+active_group	Flexigrid/demo/post-xml.php	/^	$active_group = 'default';$/;"	v
+addFormData	Flexigrid/demo/sample.html	/^function addFormData(){$/;"	f
+base_url	Flexigrid/demo/post-json.php	/^	$base_url = "http:\/\/".$_SERVER['HTTP_HOST'];$/;"	v
+base_url	Flexigrid/demo/post-xml.php	/^	$base_url = "http:\/\/".$_SERVER['HTTP_HOST'];$/;"	v
+cb	Flexigrid/js/flexigrid.js	/^				var cb = $('input[value=' + cid + ']', g.nDiv)[0];$/;"	v
+connect	Flexigrid/demo/post-json.php	/^	$connect = mysql_connect($db[$active_group]['hostname'],$db[$active_group]['username'],$db[$active_group]['password']) or die ("Error: could not connect to database");$/;"	v
+connect	Flexigrid/demo/post-xml.php	/^	$connect = mysql_connect($db[$active_group]['hostname'],$db[$active_group]['username'],$db[$active_group]['password']) or die ("Error: could not connect to database");$/;"	v
+countRec	Flexigrid/demo/post-json.php	/^function countRec($fname,$tname) {$/;"	f
+countRec	Flexigrid/demo/post-xml.php	/^function countRec($fname,$tname) {$/;"	f
+db	Flexigrid/demo/post-json.php	/^	$db = mysql_select_db($db[$active_group]['database']);$/;"	v
+db	Flexigrid/demo/post-xml.php	/^	$db = mysql_select_db($db[$active_group]['database']);$/;"	v
+diff	Flexigrid/js/flexigrid.js	/^					var diff = e.pageX - this.colresize.startX;$/;"	v
+docloaded	Flexigrid/js/flexigrid.js	/^	var docloaded = false;$/;"	v
+entry	Flexigrid/demo/example4.php	/^            $entry = array('id' => $rowNum,$/;"	v
+entry	Flexigrid/demo/post-json.php	/^	$entry = array('id'=>$row['iso'],$/;"	v
+gh	Flexigrid/js/flexigrid.js	/^		var gh = $(g.bDiv).height();$/;"	v
+gtop	Flexigrid/js/flexigrid.js	/^		var gtop = g.bDiv.offsetTop;$/;"	v
+h	Flexigrid/js/flexigrid.js	/^					this.vresize = {$/;"	p	class:this.vresize
+hrH	Flexigrid/js/flexigrid.js	/^				var hrH = g.bDiv.offsetTop + newH;$/;"	v
+hset	Flexigrid/js/flexigrid.js	/^		var g = {$/;"	p	class:$.addFlex.g
+jsonData	Flexigrid/demo/example4.php	/^        $jsonData = array('page'=>$page,'total'=>0,'rows'=>array());$/;"	v
+jsonData	Flexigrid/demo/post-json.php	/^$jsonData = array('page'=>$page,'total'=>$total,'rows'=>array());$/;"	v
+left	Flexigrid/js/flexigrid.js	/^				var left = obj.offsetParent.offsetLeft;$/;"	v
+limit	Flexigrid/demo/post-json.php	/^$limit = "LIMIT $start, $rp";$/;"	v
+limit	Flexigrid/demo/post-xml.php	/^$limit = "LIMIT $start, $rp";$/;"	v
+matched	Flexigrid/js/flexigrid.js	/^		var matched = uaMatch( navigator.userAgent );$/;"	v
+n	Flexigrid/js/flexigrid.js	/^					nw: nw,$/;"	p	class:colresize
+n	Flexigrid/js/flexigrid.js	/^					var n = $('div', this.cDrag).index(obj);$/;"	v
+n	Flexigrid/js/flexigrid.js	/^				var n = $('div', this.cDrag).index(obj),$/;"	v
+n	Flexigrid/js/flexigrid.js	/^				var n = $('thead th', g.hDiv).index(ncol);$/;"	v
+nd	Flexigrid/js/flexigrid.js	/^				var nd = parseInt($(g.nDiv).height(), 10);$/;"	v
+nw	Flexigrid/js/flexigrid.js	/^				this.colresize = {$/;"	p	class:colresize
+ow	Flexigrid/js/flexigrid.js	/^					var ow = $('th:visible div:eq(' + n + ')', this.hDiv).width();$/;"	v
+page	Flexigrid/demo/example4.php	/^    $page = isset($_POST['page']) ? $_POST['page'] : 1;$/;"	v
+page	Flexigrid/demo/post-json.php	/^$page = isset($_POST['page']) ? $_POST['page'] : 1;$/;"	v
+page	Flexigrid/demo/post-xml.php	/^$page = $_POST['page'];$/;"	v
+page	Flexigrid/demo/post-xml.php	/^$page = isset($_POST['page']) ? $_POST['page'] : 1;$/;"	v
+pdl	Flexigrid/js/flexigrid.js	/^				var pdl = parseInt($(obj).css('paddingLeft'), 10);$/;"	v
+pdt	Flexigrid/js/flexigrid.js	/^				var pdt = parseInt($(obj).css('paddingTop'), 10);$/;"	v
+pht	Flexigrid/js/flexigrid.js	/^				var pht = parseInt($(obj).parent().height(), 10);$/;"	v
+pwt	Flexigrid/js/flexigrid.js	/^				var pwt = parseInt($(obj).parent().width(), 10);$/;"	v
+qtype	Flexigrid/demo/example4.php	/^    $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : false;$/;"	v
+qtype	Flexigrid/demo/post-json.php	/^$qtype = isset($_POST['qtype']) ? $_POST['qtype'] : false;$/;"	v
+qtype	Flexigrid/demo/post-xml.php	/^$qtype = isset($_POST['qtype']) ? $_POST['qtype'] : false;$/;"	v
+query	Flexigrid/demo/example4.php	/^    $query = isset($_POST['query']) ? $_POST['query'] : false;$/;"	v
+query	Flexigrid/demo/post-json.php	/^		$query = strtolower(trim($query));$/;"	v
+query	Flexigrid/demo/post-json.php	/^$query = isset($_POST['query']) ? $_POST['query'] : false;$/;"	v
+query	Flexigrid/demo/post-xml.php	/^		$query = strtolower(trim($query));$/;"	v
+query	Flexigrid/demo/post-xml.php	/^$query = isset($_POST['query']) ? $_POST['query'] : false;$/;"	v
+r1	Flexigrid/js/flexigrid.js	/^				var r1 = p.total == 0 ? 0 : (p.page - 1) * p.rp + 1;$/;"	v
+r2	Flexigrid/js/flexigrid.js	/^				var r2 = r1 + p.rp - 1;$/;"	v
+result	Flexigrid/demo/post-json.php	/^	$result = mysql_query($rsql) or die ($rsql);$/;"	v
+result	Flexigrid/demo/post-json.php	/^	$result = runSQL($sql);$/;"	v
+result	Flexigrid/demo/post-json.php	/^$result = runSQL($sql);$/;"	v
+result	Flexigrid/demo/post-xml.php	/^	$result = mysql_query($rsql) or die ('test');$/;"	v
+result	Flexigrid/demo/post-xml.php	/^	$result = runSQL($sql);$/;"	v
+result	Flexigrid/demo/post-xml.php	/^$result = runSQL($sql);$/;"	v
+rows	Flexigrid/demo/countryArray.inc.php	/^$rows = array($/;"	v
+rows	Flexigrid/demo/example4.php	/^            $rows = $_SESSION['Example4'];$/;"	v
+rows	Flexigrid/demo/example4.php	/^        $rows = $_SESSION['Example4'];$/;"	v
+rows	Flexigrid/demo/post-json.php	/^	$rows = array_slice($rows,($page-1)*$rp,$rp);$/;"	v
+rows	Flexigrid/demo/post-xml.php	/^	$rows = array_slice($rows,($page-1)*$rp,$rp);$/;"	v
+rows	Flexigrid/demo/post-xml.php	/^$rows = array();$/;"	v
+rp	Flexigrid/demo/example4.php	/^    $rp = isset($_POST['rp']) ? $_POST['rp'] : 10;$/;"	v
+rp	Flexigrid/demo/post-json.php	/^$rp = isset($_POST['rp']) ? $_POST['rp'] : 10;$/;"	v
+rp	Flexigrid/demo/post-xml.php	/^$rp = $_POST['rp'];$/;"	v
+rp	Flexigrid/demo/post-xml.php	/^$rp = isset($_POST['rp']) ? $_POST['rp'] : 10;$/;"	v
+runSQL	Flexigrid/demo/post-json.php	/^function runSQL($rsql) {$/;"	f
+runSQL	Flexigrid/demo/post-xml.php	/^function runSQL($rsql) {$/;"	f
+sort	Flexigrid/demo/post-json.php	/^$sort = "ORDER BY $sortname $sortorder";$/;"	v
+sort	Flexigrid/demo/post-xml.php	/^$sort = "ORDER BY $sortname $sortorder";$/;"	v
+sortArray	Flexigrid/demo/post-json.php	/^	$sortArray = array();$/;"	v
+sortArray	Flexigrid/demo/post-xml.php	/^	$sortArray = array();$/;"	v
+sortMethod	Flexigrid/demo/post-json.php	/^		$sortMethod = SORT_DESC;$/;"	v
+sortMethod	Flexigrid/demo/post-json.php	/^	$sortMethod = SORT_ASC;$/;"	v
+sortMethod	Flexigrid/demo/post-xml.php	/^		$sortMethod = SORT_DESC;$/;"	v
+sortMethod	Flexigrid/demo/post-xml.php	/^	$sortMethod = SORT_ASC;$/;"	v
+sortname	Flexigrid/demo/example4.php	/^    $sortname = isset($_POST['sortname']) ? $_POST['sortname'] : 'name';$/;"	v
+sortname	Flexigrid/demo/post-json.php	/^$sortname = isset($_POST['sortname']) ? $_POST['sortname'] : 'name';$/;"	v
+sortname	Flexigrid/demo/post-xml.php	/^$sortname = $_POST['sortname'];$/;"	v
+sortname	Flexigrid/demo/post-xml.php	/^$sortname = isset($_POST['sortname']) ? $_POST['sortname'] : 'name';$/;"	v
+sortorder	Flexigrid/demo/example4.php	/^    $sortorder = isset($_POST['sortorder']) ? $_POST['sortorder'] : 'desc';$/;"	v
+sortorder	Flexigrid/demo/post-json.php	/^$sortorder = isset($_POST['sortorder']) ? $_POST['sortorder'] : 'desc';$/;"	v
+sortorder	Flexigrid/demo/post-xml.php	/^$sortorder = $_POST['sortorder'];$/;"	v
+sortorder	Flexigrid/demo/post-xml.php	/^$sortorder = isset($_POST['sortorder']) ? $_POST['sortorder'] : 'desc';$/;"	v
+sql	Flexigrid/demo/post-json.php	/^	$sql = "SELECT count($fname) FROM $tname ";$/;"	v
+sql	Flexigrid/demo/post-json.php	/^$sql = "SELECT iso,name,printable_name,iso3,numcode FROM country $where $sort $limit";$/;"	v
+sql	Flexigrid/demo/post-xml.php	/^	$sql = "SELECT count($fname) FROM $tname ";$/;"	v
+sql	Flexigrid/demo/post-xml.php	/^$sql = "SELECT iso,name,printable_name,iso3,numcode FROM country $where $sort $limit";$/;"	v
+start	Flexigrid/demo/post-json.php	/^$start = (($page-1) * $rp);$/;"	v
+start	Flexigrid/demo/post-xml.php	/^$start = (($page-1) * $rp);$/;"	v
+startX	Flexigrid/js/flexigrid.js	/^					this.colresize = {$/;"	p	class:colresize
+stat	Flexigrid/js/flexigrid.js	/^				var stat = p.pagestat;$/;"	v
+tbody	Flexigrid/js/flexigrid.js	/^				var tbody = document.createElement('tbody');$/;"	v
+test	Flexigrid/demo/index.html	/^            function test(com, grid) {$/;"	f
+thead	Flexigrid/js/flexigrid.js	/^		var thead = $("thead:first", t).get(0);$/;"	v
+top	Flexigrid/js/flexigrid.js	/^				var top = obj.offsetParent.offsetTop;$/;"	v
+total	Flexigrid/demo/post-json.php	/^	$total = count($rows);$/;"	v
+total	Flexigrid/demo/post-json.php	/^$total = countRec("iso","country $where");$/;"	v
+total	Flexigrid/demo/post-xml.php	/^	$total = count($rows);$/;"	v
+total	Flexigrid/demo/post-xml.php	/^$total = countRec('iso','country');$/;"	v
+uaMatch	Flexigrid/js/flexigrid.js	/^		function uaMatch( ua ) {$/;"	f	function:function
+usingSQL	Flexigrid/demo/post-json.php	/^$usingSQL = true;$/;"	v
+usingSQL	Flexigrid/demo/post-xml.php	/^$usingSQL = true;$/;"	v
+where	Flexigrid/demo/post-json.php	/^$where = "";$/;"	v
+where	Flexigrid/demo/post-xml.php	/^$where = "";$/;"	v
+wt	Flexigrid/js/flexigrid.js	/^				var wt = parseInt(obj.style.width, 10);$/;"	v
+xml	Flexigrid/demo/post-xml.php	/^$xml = "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>\\n";$/;"	v
