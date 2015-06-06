@@ -4,6 +4,10 @@
   "name": "Where is it 1.0",
   "description": "Searches through Github repository to find method definition",
   "version": "1.0",
+  "background":
+    {
+        "scripts": ["jquery-2.1.4.js", "find.js"]
+    },
 
   "browser_action": {
     "default_icon": "icon.png",
@@ -12,7 +16,10 @@
   "content_scripts":[
     {
       "matches":["*://github.com/*"],
-      "js":["injected.js"]
+      "js":["injected.js",
+      "jquery-2.1.4.js",
+      "find.js"],
+            "run_at": "document_end"
     }
   ],
   "permissions": [

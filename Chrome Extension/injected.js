@@ -8,3 +8,4 @@ function getSelectionText() {
     console.log(text);
 }
 document.addEventListener("mouseup",getSelectionText);
+
