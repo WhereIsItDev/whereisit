@@ -4,6 +4,7 @@ var multer     = require('multer');
 var app        = express();
 
 var getGit     = require("./getGit");
+var ctags = require("./ctags");
 
 app.use(bodyParser.json());
 app.use(multer());
