@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # AngelHack Brooklyn 2015
+import subprocess
 import sys
 
 from textwrap import dedent
@@ -87,13 +88,9 @@ def get_snippet(tag):
     """
     path = tag.tagfile
     linenum = tag.linenum
-    with open(path, 'r') as f:
-        for i, l in enumerate(f):
-            if i == linenum:
-                line = l
-                break;
-        else:
-            line = None
+    f = open(path, 'r')
+    lines = f.readlines()
+    line = lines[linenum-1]
     return Snippet(path, linenum, line.strip() if line else '')
 
 
@@ -113,9 +110,19 @@ def main(tagname, tagsfile):
     return snippets
 
 
+def gen_ctags(repo_path):
+    tags_path = repo_path + 'tags'
+    subprocess.call(
+        ['ctags', '-f', tags_path, '-R', '--excmd=number', repo_path])
+    return tags_path
+
+
 if __name__ == '__main__':
     # import doctest
     # doctest.testmod()
     if len(sys.argv) == 3:
-        snippets = main(sys.argv[1], sys.argv[2])
+        tagname = sys.argv[1]
+        repo_path = sys.argv[2]
+        tags_path = gen_ctags(repo_path)
+        snippets = main(tagname, tags_path)
         print snippets
