@@ -39,8 +39,9 @@ class SnippetEncoder(json.JSONEncoder):
 
 
 class Snippet(object):
-    def __init__(self, filepath, linenum, snippet):
-        self.filepath = filepath
+    def __init__(self, localpath, linenum, snippet):
+        self.localpath = localpath
+        self.filepath = '/'.join(localpath.split('/')[3:])
         self.linenum = linenum
         self.snippet = snippet
 
@@ -52,6 +53,7 @@ class Snippet(object):
         """
         return {
             'filepath': self.filepath,
+            'localpath': self.localpath,
             'linenum': self.linenum,
             'snippet': self.snippet,
         }
