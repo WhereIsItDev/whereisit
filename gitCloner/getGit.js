@@ -9,8 +9,8 @@ if(!which('git')){
 //END - Verifying for reqs...
 
 //Globals
-var reposDir = 'repos';
-var baseDir  = pwd()+'/';
+var baseDir  = __dirname + '/';
+var reposDir = baseDir + '../repos';
 //END - Globals
 
 exports.cloneFromGit = function(url,line,snippet){
@@ -30,20 +30,18 @@ exports.cloneFromGit = function(url,line,snippet){
             user = piecesOfUrl[i];
     }
 
-
-    if(ls(baseDir+reposDir+'/'+user+'/'+repo).length==0){
-        mkdir('-p',baseDir+reposDir+'/'+user+'/'+repo);
-        cd(baseDir+reposDir+'/'+user+'/');
+    if(ls(reposDir+'/'+user+'/'+repo).length==0){
+        mkdir('-p',reposDir+'/'+user+'/'+repo);
+        cd(reposDir+'/'+user+'/');
         var ret = exec('git clone '+repoUrl);
         if(ret.code=="0"){
             echo("Yahoooooo!!!! You've cloned your stuff!!!");
             return 0;
         }
     }else{
-        cd(baseDir+reposDir+'/'+user+'/'+repo);
-        var ret1 = exec('git fetch --all ');
-        var ret2 = exec('git reset --hard origin/master');
-        if(ret1.code=="0" && ret2.code=="0"){
+        cd(reposDir+'/'+user+'/'+repo);
+        var ret = exec('git merge origin master');
+        if(ret.code=="0"){
             return 0;
         }
     }
