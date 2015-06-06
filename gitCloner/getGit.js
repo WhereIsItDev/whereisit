@@ -9,8 +9,7 @@ if(!which('git')){
 //END - Verifying for reqs...
 
 //Globals
-var baseDir  = __dirname + '/';
-var reposDir = baseDir + '../repos';
+var reposDir = 'repos';
 //END - Globals
 
 exports.cloneFromGit = function(url,line,snippet){
