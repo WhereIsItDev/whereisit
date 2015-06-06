@@ -14,12 +14,20 @@ app.post('/',function(req,res){
     url     = req.body.url;
     line    = req.body.line;
     snippet = req.body.snippet;
-    if(url != null && line != null && snippet != null ){
-        console.log(getGit);
-        res.send(" "+getGit.cloneFromGit(url,line,snippet));
-    }else{
-        res.send(" "+(-2));
+
+    if (url == null || line == null || snippet == null) {
+        return res.send(" "+(-2));
     }
+
+    var repoPath = getGit.cloneFromGit(url,line,snippet);
+    if (repoPath == null) {
+        return res.send(" "+(-2));
+    }
+
+    results = ctags.run(snippet, repoPath);
+
+    // TODO: return as a JSON response
+    return res.send(results);
 });
 
 
