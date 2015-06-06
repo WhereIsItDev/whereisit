@@ -10,15 +10,13 @@ if(!which('git')){
 
 //Globals
 var reposDir = 'repos';
-var baseDir  = pwd();
+var baseDir  = pwd()+'/';
 //END - Globals
 
 exports.cloneFromGit = function(url,line,snippet){
     //var url     = 'https://github.com/paulopmx/Flexigrid/blob/master/js/flexigrid.js';
     //var line    = 13;
     //var snippet = 'function';
-
-    cd(baseDir);
 
     var user        = '';
     var repoUrl     = '';
@@ -33,16 +31,16 @@ exports.cloneFromGit = function(url,line,snippet){
     }
 
 
-    if(ls(reposDir+'/'+user+'/'+repo).length==0){
-        mkdir('-p',reposDir+'/'+user+'/'+repo);
-        cd(reposDir+'/'+user+'/');
+    if(ls(baseDir+reposDir+'/'+user+'/'+repo).length==0){
+        mkdir('-p',baseDir+reposDir+'/'+user+'/'+repo);
+        cd(baseDir+reposDir+'/'+user+'/');
         var ret = exec('git clone '+repoUrl);
         if(ret.code=="0"){
             echo("Yahoooooo!!!! You've cloned your stuff!!!");
             return 0;
         }
     }else{
-        cd(reposDir+'/'+user+'/'+repo);
+        cd(baseDir+reposDir+'/'+user+'/'+repo);
         var ret1 = exec('git fetch --all ');
         var ret2 = exec('git reset --hard origin/master');
         if(ret1.code=="0" && ret2.code=="0"){
