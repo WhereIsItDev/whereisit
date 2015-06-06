@@ -1,4 +1,11 @@
-document.addEventListener('dblclick', handleClick(),console.log)
+chrome.tabs.executeScript( {
+  code: "window.getSelection().toString();"
+}, function(selection) {
+  //document.getElementById("").value = selection[0];
+  console.log(selection[0]);
+});
+
+document.addEventListener('dblclick', handleClick(),console.log);
 
 function handleClick() {
 
