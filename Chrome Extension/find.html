@@ -4,15 +4,20 @@
 <head>
   <title>Where is it</title>
   <style>
+    .sep {
+      border: 1px solid #8ab8e6;
+    }
     #status {
       font-size: 16px;
     }
-    .link {
-      font-size: 20px;
+    a {
       color: #8ab8e6;
       text-decoration: none;
     }
-    .link:hover {
+    .link {
+      font-size: 20px;
+    }
+    a:hover {
       color: #efefef;
       background-color: rgb(21, 141, 176);
     }
@@ -29,16 +34,85 @@
     }
     #selSom{
       display: block;
+      min-width: 400px;
     }
     #snippet {
       padding: 2px;
       background-color: #ffffd1;
     }
+    .dp {
+      width: 40px;
+    }
+    .avatar-list-wrapper {
+      text-align: center;
+    }
+    .avatar-list {
+      list-style: none;
+      display: inline-block;
+      padding: 0;
+      margin: 0;
+    }
+    .avatar-list li {
+      display: inline-block;
+      width: 50px;
+      text-align: center;
+    }
   </style>
   </head>
   <body>
   <div id="status">
-    <div id="selSom">Select some text.</div>
+    <div id="selSom">
+      <h2><a id="project-link" class="link" href="https://www.github.com/ngzhian/whereisit">whereisit</a></h2>
+      <p>Looks up code definition so you don't have to!</p>
+      <p>Highlight a piece of code you would like to lookup the definition for, and click this button again</p>
+      <h4>User reviews (may be fake)</h4>
+      <blockquote>
+        Works like magic...
+      </blockquote>
+      <blockquote>
+        I didn't know where this method was defined, now I do!
+      </blockquote>
+      <blockquote>
+        It's like IntelliSense, but dumber.
+      </blockquote>
+      <hr class="sep"></hr>
+      <h5 class="credits">A hack for AngelHack Brooklyn 2015 by</h5>
+      <p>
+      <div class="avatar-list-wrapper">
+        <ul class="avatar-list">
+          <li>
+          <img class="dp" src="https://avatars.githubusercontent.com/celsopalmeiraneto?s=40">
+          <div>
+            <a href="http://github.com/celsopalmeiraneto">Celso</a>
+          </div>
+          </li>
+          <li>
+          <img class="dp" src="https://avatars.githubusercontent.com/danielcodes?s=40">
+          <div>
+            <a href="http://github.com/danielcodes">Daniel</a>
+          </div>
+          </li>
+          <li>
+          <img class="dp" src="https://avatars.githubusercontent.com/Hexirost?s=40">
+          <div>
+            <a href="http://github.com/Hexirost">Jeff</a>
+          </div>
+          </li>
+          <li>
+          <img class="dp" src="https://avatars.githubusercontent.com/Anomalous1?s=40">
+          <div>
+            <a href="http://github.com/Anomalous1">Vincent</a>
+          </div>
+          </li>
+          <li>
+          <img class="dp" src="https://avatars.githubusercontent.com/ngzhian?s=40">
+          <div>
+            <a href="http://github.com/ngzhian">Zhi An</a>
+          </div>
+          </li>
+        </ul>
+      </div>
+    </div>
     <img id="spinner" src="spinner.gif">
     <div id="title">results for
       <strong id="search"></strong>
