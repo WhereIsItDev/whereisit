@@ -11,39 +11,32 @@ function sendrequest(data){
     form.append("url",data.url);
     form.append("line",data.line);
 
-    //alert("sendquery  "+data.snippet+"   "+data.url);
-
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://45.33.82.241:8880", false);
-    //xhr.setRequestHeader("Content-type","form-data");
-    xhr.onreadystatechange = function() {
+    xhr.open("POST", "http://45.33.82.241:8880", true);
+    xhr.onreadystatechange = function(data,req) {
       if (xhr.readyState == 4) {
-        //alert("uhuuuuu!!!");
+        var jsonResponse = JSON.parse(data.target.responseText);
+        console.log(jsonResponse);
+        printOnFrame(jsonResponse);
       }
     }
 
     xhr.send(form);
-	//$.post('127.0.0.1:8880',data,acceptedQuery(returnMessage));
-	// requests from the server with the query
 }
 // if returns, send data to return
-function acceptedQuery(returnMessage){
-	alert(returnMessage);
-	// send data to post if successful, and retrieve the URLs
-	//$.get(localhost,getFromServer(data))
-
+function acceptedQuery(data,stat){
+    console.log(data,stat);
 }
 
-function getFromServer(data){
+function printOnFrame(data){
+    console.log("wooooorks!!!");
+    var container = document.getElementById("status");
+    chrome.browserAction.getPopup({},function(text){
+        console.log(text);
+    });
+    console.log(container);
 
-	var groupedData = data
-	for (i = 0; i < data.length; i++) { 
-
-
-	}
-
-	//send the data to the frame
-
+    for(i=0;i<data.length;i++){
+        $("#status").append("<p>nanannanananananan</p>");
+    }
 }
-//on localhost
-//server 8880
