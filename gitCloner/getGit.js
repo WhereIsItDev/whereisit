@@ -18,27 +18,29 @@ exports.cloneFromGit = function(url,line,snippet){
     var repoUrl     = '';
     var repo        = '';
     var piecesOfUrl = url.split('/');
-    for(i=0;i<5;i++){
+    for (i=0; i<5; i++){
         repoUrl += piecesOfUrl[i]+'/';
-        if(i==4)
+        if (i==4)
             repo = piecesOfUrl[i];
-        if(i==3)
+        if (i==3)
             user = piecesOfUrl[i];
     }
 
     repoPath = [reposDir, user, repo].join('/');
-    if(ls(repoPath).length==0){
+    console.log('repoPath=' + repoPath);
+
+    if (ls(repoPath).length==0) {
         mkdir('-p', repoPath);
         var ret = exec('git clone ' + repoUrl + ' ' + repoPath);
-        if(ret.code=="0"){
+        if (ret.code=="0") {
             echo("Yahoooooo!!!! You've cloned your stuff!!!");
             return repoPath;
         }
-    }else{
+    } else {
         oldDir = pwd();
         cd(repoPath);
         var ret = exec('git pull');
-        if(ret.code=="0"){
+        if (ret.code=="0") {
             cd(oldDir);
             return repoPath;
         }
