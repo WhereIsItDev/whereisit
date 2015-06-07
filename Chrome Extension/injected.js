@@ -1,16 +1,19 @@
-function getSelectionText() {
-    var text = "";
-    if (window.getSelection) {
-        text = window.getSelection().toString();
-    } else if (document.selection && document.selection.type != "Control") {
-        text = document.selection.createRange().text;
-    }
-    text = text.trim();
-    if(text.length>0){
-        chrome.runtime.sendMessage({
-            snippet:text,
-            url:window.location.href
-        });
-    }
+function getSelectedText() {
+  var text = "";
+  if (window.getSelection) {
+    text = window.getSelection().toString();
+  } else if (document.selection && document.selection.type != "Control") {
+    text = document.selection.createRange().text;
+  }
+  return text.trim();
 }
-document.addEventListener("mouseup",getSelectionText);
+
+chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+  if (msg.text && (msg.text == "whereisit")) {
+    var text = getSelectedText();
+    if (text) {
+      console.log('User selection is: ' + text);
+      sendResponse(text);
+    }
+  }
+});
