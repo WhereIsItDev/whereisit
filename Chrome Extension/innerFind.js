@@ -25,6 +25,8 @@ function findit(data) {
       var url = event.target.href;
       openInNewTab(url);
     })
+    $("#spinner").hide();
+    $("#title").show();
   }
 
   sendrequest({
@@ -34,6 +36,9 @@ function findit(data) {
 }
 
 function sendrequest(data, callback){
+    $("#spinner").show();
+    $("#title").hide();
+    $("#selSom").hide();
     var form = new FormData();
     form.append("snippet", data.snippet);
     form.append("url", data.url);

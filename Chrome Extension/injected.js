@@ -15,6 +15,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
       console.log('User selection is: ' + text);
       console.log(window.location.href);
       sendResponse({text:text, location:window.location.href});
+    }else{
     }
   }
 });
