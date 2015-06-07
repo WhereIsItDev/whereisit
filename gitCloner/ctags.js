@@ -6,6 +6,7 @@ exports.run = function(tagname, repopath) {
   cmd = [script, tagname, repopath].join(' ');
   console.log('running cmd: ' + cmd);
   var ret = exec(cmd, {silent:true});
+  console.log('result: ' + ret.output);
   candidates = JSON.parse(ret.output);
   return candidates;
 }
