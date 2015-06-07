@@ -6,6 +6,6 @@ function getSelectionText() {
         text = document.selection.createRange().text;
     }
     console.log(text);
-    chrome.runtime.sendMessage({textSelected:text});
+    chrome.runtime.sendMessage(text);
 }
 document.addEventListener("mouseup",getSelectionText);
