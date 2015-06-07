@@ -34,9 +34,11 @@ exports.cloneFromGit = function(url){
     var timeNow = Date.now() / 1000 | 0;
 
     if(lastCheck.hasOwnProperty(repoUrl)){
-        if((timeNow - lastCheck[repoUrl])<30000){
+        if((timeNow - lastCheck[repoUrl])<30){
             echo("I didn't pulled because I just did it!!!!");
             return repoPath;
+        }else{
+            lastCheck[repoUrl] = timeNow;
         }
     }else{
         lastCheck[repoUrl] = timeNow;
