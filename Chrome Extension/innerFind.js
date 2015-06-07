@@ -50,6 +50,7 @@ function findit(data) {
       openInNewTab(url);
     })
     $("#spinner").hide();
+    $("#selSom").hide();
     $("#title").show();
   }
 
