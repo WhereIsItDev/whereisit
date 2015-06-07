@@ -20,7 +20,7 @@ app.post('/',function(req,res){
         return res.send(" "+(-2));
     }
 
-    var repoPath = getGit.cloneFromGit(url,line,snippet);
+    var repoPath = getGit.cloneFromGit(url);
     if (repoPath == null) {
         return res.send(" "+(-2));
     }
