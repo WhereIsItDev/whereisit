@@ -14,7 +14,7 @@ function sendrequest(data){
     //alert("sendquery  "+data.snippet+"   "+data.url);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:8880", false);
+    xhr.open("POST", "http://45.33.82.241:8880", false);
     //xhr.setRequestHeader("Content-type","form-data");
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4) {
