@@ -6,6 +6,26 @@ var openInNewTab = function(url) {
   backgroundPage.open(url);
 };
 
+
+function findstuff(data) {
+  var userSelection = data.text;
+  var location = data.location;
+  var cachedResults = data.cached;
+  var callback = data.callback;
+  var cachedResults = data.cached;
+
+  if (cachedResults !== undefined) {
+    console.log('using cached results:' + cachedResults);
+    callback(cachedResults);
+    return;
+  }
+
+  sendrequest({
+    snippet: userSelection,
+    url: location,
+  }, callback);
+}
+
 /**
  * Given a user selection, make the API call to server
  * and populate the background html
@@ -84,14 +104,30 @@ function sendrequest(data, callback){
  * Triggered when user clicks on the action button
  */
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('project-link').click(function(event) {
+  document.getElementById('project-link').addEventListener('click', function(event) {
     openInNewTab(event.target.href);
   })
-
-  getCurrentTab(function(tab) {
-    chrome.tabs.sendMessage(
-      tab.id, { text: "whereisit" }, findit);
-  })
+  var search = window.location.search.substring(1);
+  console.log(search);
+  if (search) {
+    var splits = search.split('&', 2);
+    var selection = splits[0].substring('selection'.length + 1);
+    var location = splits[1].substring('location'.length + 1);
+    findstuff({
+      'text': selection,
+      'location': location,
+      'callback': function(r) {
+        var result = r[0];
+        var url = link(result.filepath, location, result.linenum);
+        window.location.href = url;
+      }
+    });
+  } else {
+    getCurrentTab(function(tab) {
+      chrome.tabs.sendMessage(
+        tab.id, { text: "whereisit" }, findit);
+    })
+  }
 });
 
 function getCurrentTab(cb) {
