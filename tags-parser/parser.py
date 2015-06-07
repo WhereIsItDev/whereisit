@@ -54,7 +54,7 @@ class Tag(object):
                 self.kind = 'class'
             elif arg.startswith('class:'):
                 self.member_of = arg
-                kind, name = arg.split(':')
+                kind, name = arg.split(':', 1)
                 self.member_of_kind = kind
                 self.member_of_name = name
 
