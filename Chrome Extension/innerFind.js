@@ -5,7 +5,8 @@ DEV = "http://localhost:8080";
  * Given a user selection, make the API call to server
  * and populate the background html
  */
-function findit(text) {
+function findit(data) {
+  var userSelection = data.text, location = data.location;
   $status = $('#status');
   function addToDom(resp) {
     resp.forEach(function(v) {
@@ -18,9 +19,8 @@ function findit(text) {
   }
 
   sendrequest({
-    snippet: 'Graph',
-    url: 'https://github.com/danielcodes/Algorithms/blob/master/Seven/Graph.java#L31',
-    line: '13'
+    snippet: userSelection,
+    url: location,
   }, addToDom);
 }
 
@@ -28,15 +28,14 @@ function sendrequest(data, callback){
     var form = new FormData();
     form.append("snippet", data.snippet);
     form.append("url", data.url);
-    form.append("line", data.line);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", PROD, true);
+    xhr.open("POST", DEV, true);
     xhr.onreadystatechange = function(data,req) {
       if (xhr.readyState == 4) {
         var jsonResponse = JSON.parse(data.target.responseText);
-        callback(jsonResponse)
         console.log('JSON response from server: ' + jsonResponse);
+        callback(jsonResponse)
       }
     }
     xhr.send(form);
