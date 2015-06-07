@@ -10,23 +10,106 @@
       }
       #status {
         /* avoid an excessively wide status text */
-        white-space: pre;
+        /*white-space: pre;*/
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 400px;
         width: 300px;
         height: 200px;
+        border-color: black;
+        border-style: solid;
+        padding: 5px;
       }
+
+      #title{
+        border-color: black;
+        border-style: solid;
+        padding: 2.5px;
+        margin-bottom: 10px;
+
+
+      }
+
+      #snippet{
+        border-color: black;
+        border-style: solid;
+        padding: 2.5px;
+        margin-bottom: 10px;
+
+
+      }
+
+      #num-left{
+        border-color: black;
+        border-style: solid;
+        padding: 2.5px;
+        /*position: absolute;*/
+        left: 0;
+        width: 30%;
+        float: left;
+        margin-bottom: 10px;
+
+      }
+
+      #num-right{
+        border-color: black;
+        border-style: solid;
+        padding: 2.5px;
+        /*position: absolute;*/
+        right: 0;
+        width: 30%;
+        float: left;
+        margin-left: 10px;
+      }
+
+      #path-top{
+        border-color: black;
+        border-style: solid;
+        padding: 2.5px;
+        clear: both;
+        margin-bottom: 10px;
+
+      }
+
+      #path-bot{
+        border-color: black;
+        border-style: solid;
+        padding: 2.5px;
+        clear: both;
+      }
+      /*add margin too, if more elements are to be added*/
+
+
     </style>
-    
+
   </head>
   <body>
     <div id="status">
-      <p>Celso's test n 2</p>
+        <div id="title">
+            Function Snippet
+        </div>
+        <div id="snippet">
+            SNIPPET
+        </div>
+
+
+        <div id="num-left">
+            Line Number
+        </div>
+        <div id="num-right">
+            #
+        </div>
+
+
+        <div id="path-top">
+            Path to file
+        </div>
+        <div id="path-bot">
+            URL
+        </div>
     </div>
     <img id="image-result" hidden>
 
   </body>
-  
-</html>
 
+</html>
