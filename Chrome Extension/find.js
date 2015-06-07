@@ -1,3 +1,4 @@
+var buffer = null;
 chrome.runtime.onMessage.addListener(function(messsage,sender,res){
     sendrequest(messsage);
 });
@@ -16,8 +17,8 @@ function sendrequest(data){
     xhr.onreadystatechange = function(data,req) {
       if (xhr.readyState == 4) {
         var jsonResponse = JSON.parse(data.target.responseText);
-        console.log(jsonResponse);
-        printOnFrame(jsonResponse);
+        document.cookie.buffer = jsonResponse;
+        //printOnFrame(jsonResponse);
       }
     }
 
@@ -26,17 +27,4 @@ function sendrequest(data){
 // if returns, send data to return
 function acceptedQuery(data,stat){
     console.log(data,stat);
-}
-
-function printOnFrame(data){
-    console.log("wooooorks!!!");
-    var container = document.getElementById("status");
-    chrome.browserAction.getPopup({},function(text){
-        console.log(text);
-    });
-    console.log(container);
-
-    for(i=0;i<data.length;i++){
-        $("#status").append("<p>nanannanananananan</p>");
-    }
 }

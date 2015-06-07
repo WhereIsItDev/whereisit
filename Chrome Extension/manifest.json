@@ -17,6 +17,7 @@
     {
       "matches":["*://github.com/*"],
       "js":["injected.js",
+      "innerFind.js",
       "jquery-2.1.4.js",
       "find.js"],
             "run_at": "document_end"
