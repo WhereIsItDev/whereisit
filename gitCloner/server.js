@@ -23,6 +23,7 @@ app.post('/',function(req,res){
     if (repoPath == null) {
         return res.send(" "+(-2));
     }
+    console.log(repoPath);
 
     results = ctags.run(snippet, repoPath);
 

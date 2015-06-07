@@ -75,7 +75,7 @@ var link = function(path, location, line) {
   var repo = piecesOfUrl[4];
   var user = piecesOfUrl[3];
   url = ['https://github.com', user, repo, 'blob', 'master', path].join('/');
-  url += '#l' + line
+  url += '#l' + line;
   console.log(url);
   return url;
 }
