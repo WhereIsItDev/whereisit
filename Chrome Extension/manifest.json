@@ -26,6 +26,7 @@
     "activeTab",
     "*://github.com/*",
     "https://ajax.googleapis.com/",
-    "http://localhost/"
+    "http://localhost/",
+    "http://45.33.82.241/"
   ]
 }
