@@ -4,11 +4,17 @@
 <head>
   <title>Where is it</title>
   <style>
+    #status {
+      max-width: 400px;
+      font-size: 14px;
+    }
+    pre {
+      overflow-x: scroll;
+      margin: 0;
+      padding: 5px;
+    }
     .sep {
       border: 1px solid #8ab8e6;
-    }
-    #status {
-      font-size: 14px;
     }
     a {
       color: #8ab8e6;
@@ -62,7 +68,9 @@
   <body>
   <div id="status">
     <div id="selSom">
-      <h2><a id="project-link" class="link" href="https://www.github.com/ngzhian/whereisit">whereisit</a></h2>
+      <h2>
+        <a id="project-link" class="link" href="https://www.github.com/ngzhian/whereisit">whereisit</a>
+      </h2>
       <p>Looks up code definition so you don't have to!</p>
       <p>Highlight a piece of code you would like to lookup the definition for, and click this button again</p>
       <h4>User reviews (may be fake)</h4>

@@ -42,8 +42,8 @@ function findit(data) {
       var html = template.replace('$LINK', link(v.filepath, location, v.linenum))
       .replace('$PATH', v.filepath)
       .replace('$LINE', v.linenum)
-      .replace('$EXCERPT', v.exerpt);
       $status.append($(html));
+      $status.find('pre').text(v.exerpt);
     });
     $status.find('.link').click(function(event) {
       var url = event.target.href;
@@ -84,6 +84,10 @@ function sendrequest(data, callback){
  * Triggered when user clicks on the action button
  */
 document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('project-link').click(function(event) {
+    openInNewTab(event.target.href);
+  })
+
   getCurrentTab(function(tab) {
     chrome.tabs.sendMessage(
       tab.id, { text: "whereisit" }, findit);
@@ -107,7 +111,6 @@ var link = function(path, location, line) {
   var user = piecesOfUrl[3];
   url = ['https://github.com', user, repo, 'blob', 'master', path].join('/');
   url += '#l' + line;
-  console.log(url);
   return url;
 }
 
@@ -117,7 +120,6 @@ var template = '<div class="result">' +
     '</div>' +
     '<div id="snippet">' +
       '<pre>' +
-      '$EXCERPT' +
       '</pre>' +
     '</div>' +
   '</div>';
