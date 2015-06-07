@@ -25,6 +25,7 @@
   "permissions": [
     "activeTab",
     "*://github.com/*",
-    "https://ajax.googleapis.com/"
+    "https://ajax.googleapis.com/",
+    "http://localhost/"
   ]
 }
