@@ -10,7 +10,8 @@ if(!which('git')){
 
 //Globals
 // file should be run using scripts/runserver from root dir
-var reposDir = 'repos';
+var reposDir  = 'repos';
+var lastCheck = {};
 //END - Globals
 
 exports.cloneFromGit = function(url){
@@ -26,8 +27,20 @@ exports.cloneFromGit = function(url){
             user = piecesOfUrl[i];
     }
 
+
     repoPath = [reposDir, user, repo].join('/');
     console.log('repoPath=' + repoPath);
+
+    var timeNow = Date.now() / 1000 | 0;
+
+    if(lastCheck.hasOwnProperty(repoUrl)){
+        if((timeNow - lastCheck[repoUrl])<30000){
+            return repoPath;
+        }
+    }else{
+        lastCheck[repoUrl] = timeNow;
+    }
+
 
     if (ls(repoPath).length==0) {
         mkdir('-p', repoPath);
@@ -39,6 +52,7 @@ exports.cloneFromGit = function(url){
     } else {
         oldDir = pwd();
         cd(repoPath);
+        echo("Pulling!");
         var ret = exec('git pull');
         if (ret.code=="0") {
             cd(oldDir);
