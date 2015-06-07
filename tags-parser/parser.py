@@ -18,12 +18,39 @@ $.addFlex	Flexigrid/js/flexigrid.js	75;"	f
 
 class Tag(object):
     def __init__(self, *args):
+        """
+        >>> name = 'repos/danielcodes/Algorithms/Seven/Graph.java'
+        >>> tag = Tag(name, name, '4;"', 'm', 'class:Graph')
+        >>> tag.kind
+        'method'
+        >>> tag.member_of
+        'class:Graph'
+        >>> tag.member_of_kind
+        'class'
+        >>> tag.member_of_name
+        'Graph'
+        """
         if len(args) < 3:
             raise Exception('bad args')
         self.tagname = args[0]
         self.tagfile = args[1]
         self.tagaddress = args[2]
         self.linenum = int(self.tagaddress.split(';')[0])
+        self.parse_tagfields(*args[3:])
+
+    def parse_tagfields(self, *args):
+        for arg in args:
+            if not arg:
+                continue
+            if arg == 'm':
+                self.kind = 'method'
+            elif arg == 'c':
+                self.kind = 'class'
+            elif arg.startswith('class:'):
+                self.member_of = arg
+                kind, name = arg.split(':')
+                self.member_of_kind = kind
+                self.member_of_name = name
 
     def __str__(self):
         return '(%s)(%s)(%s)' % (self.tagname, self.tagfile, self.tagaddress)
