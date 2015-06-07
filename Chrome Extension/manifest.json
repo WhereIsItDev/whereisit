@@ -7,8 +7,8 @@
   "icons":{"128":"logo128.png","19":"logo19.png","16":"logo16.png"},
   "background":
     {
-        "scripts": ["jquery-2.1.4.js", "find.js"]
-    },
+    "scripts": ["jquery-2.1.4.js", "find.js"]
+  },
 
   "browser_action": {
     "default_icon": "logo19.png",
@@ -17,14 +17,15 @@
   "content_scripts":[
     {
       "matches":["*://github.com/*"],
-      "js":["injected.js",
-      "innerFind.js",
-      "jquery-2.1.4.js",
-      "find.js"],
-            "run_at": "document_end"
+      "js":[
+        "injected.js",
+        "innerFind.js",
+        "jquery-2.1.4.js"],
+        "run_at": "document_end"
     }
   ],
   "permissions": [
+    "contextMenus",
     "activeTab",
     "*://github.com/*",
     "https://ajax.googleapis.com/",
