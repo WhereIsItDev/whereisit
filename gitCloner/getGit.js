@@ -39,8 +39,8 @@ exports.cloneFromGit = function(url,line,snippet){
         }
     }else{
         oldDir = pwd();
-        cd(reposDir+'/'+user+'/'+repo);
-        var ret = exec('git merge origin master');
+        cd(repoPath);
+        var ret = exec('git pull');
         if(ret.code=="0"){
             cd(oldDir);
             return repoPath;
