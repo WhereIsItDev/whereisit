@@ -31,7 +31,7 @@ exports.cloneFromGit = function(url,line,snippet){
 
     if (ls(repoPath).length==0) {
         mkdir('-p', repoPath);
-        var ret = exec('git clone ' + repoUrl + ' ' + repoPath);
+        var ret = exec('git clone --depth 1 ' + repoUrl + ' ' + repoPath);
         if (ret.code=="0") {
             echo("Yahoooooo!!!! You've cloned your stuff!!!");
             return repoPath;
