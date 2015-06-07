@@ -38,7 +38,7 @@ function sendrequest(data, callback){
     form.append("url", data.url);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", DEV, true);
+    xhr.open("POST", PROD, true);
     xhr.onreadystatechange = function(data,req) {
       if (xhr.readyState == 4) {
         var jsonResponse = JSON.parse(data.target.responseText);
