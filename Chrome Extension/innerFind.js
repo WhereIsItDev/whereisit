@@ -11,6 +11,7 @@ var openInNewTab = backgroundPage.open;
 function findit(data) {
   var userSelection = data.text, location = data.location;
   $status = $('#status');
+  $status.find('#search').text(userSelection);
   function addToDom(resp) {
     resp.forEach(function(v) {
       var html = template.replace('$LINK', link(v.filepath, location, v.linenum))
