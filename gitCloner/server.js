@@ -13,10 +13,9 @@ app.use(multer());
 app.post('/',function(req,res){
     echo("someone connected");
     url     = req.body.url;
-    line    = req.body.line;
     snippet = req.body.snippet;
 
-    if (url == null || line == null || snippet == null) {
+    if (url == null || snippet == null) {
         return res.send(" "+(-2));
     }
 
