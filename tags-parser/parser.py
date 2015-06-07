@@ -133,8 +133,10 @@ def main(tagname, tagsfile):
 
 def gen_ctags(repo_path):
     tags_path = os.path.join(repo_path, 'tags')
-    subprocess.call(
-        ['ctags', '-f', tags_path, '-R', '--excmd=number', repo_path])
+    with open('error.log', 'a') as f:
+        subprocess.check_output(
+            ['ctags', '-f', tags_path, '-R', '--excmd=number', repo_path],
+            stderr=f)
     return tags_path
 
 
