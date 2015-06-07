@@ -67,16 +67,17 @@ class SnippetEncoder(json.JSONEncoder):
 
 
 class Snippet(object):
-    def __init__(self, localpath, linenum, snippet):
+    def __init__(self, localpath, linenum, snippet, exerpt=None):
         self.filepath = '/'.join(localpath.split('/')[3:])
         self.linenum = linenum
         self.snippet = snippet
+        self.exerpt = exerpt
 
     def to_json(self):
         """
-        >>> snippet = Snippet('path', 1, 'snippet')
+        >>> snippet = Snippet('repos/u/p/path', 1, 'snippet')
         >>> snippet.to_json()
-        '{"snippet": "snippet", "linenum": 1, "filepath": "path"}'
+        {'snippet': 'snippet', 'linenum': 1, 'filepath': 'path'}
         """
         return {
             'filepath': self.filepath,
@@ -129,17 +130,18 @@ def get_snippet(tag):
     """A tag has information on the filename,
     and also the line where this tag can be found.
 
-    >>> name = 'tags-parser/parser.py'
-    >>> tag = Tag(name, name, '2;"')
+    >>> name = 'repos/danielcodes/Algorithms/Seven/Graph.java'
+    >>> tag = Tag(name, name, '4;"')
     >>> get_snippet(tag)
-    (tags-parser/parser.py)(2)(# AngelHack Brooklyn 2015)
+    (Seven/Graph.java)(4)(public class Graph)
     """
     path = tag.tagfile
     linenum = tag.linenum
-    f = open(path, 'r')
-    lines = f.readlines()
-    line = lines[linenum-1]
-    return Snippet(path, linenum, line.strip() if line else '')
+    with open(path, 'r') as f:
+        for i in range(linenum):
+            line = f.readline().strip()
+    exerpt = []
+    return Snippet(path, linenum, line, exerpt)
 
 
 def main(tagname, tagsfile):
