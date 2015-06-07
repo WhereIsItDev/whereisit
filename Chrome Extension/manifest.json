@@ -4,13 +4,14 @@
   "name": "Where is it 1.0",
   "description": "Searches through Github repository to find method definition",
   "version": "1.0",
+  "icons":{"128":"logo128.png","19":"logo19.png","16":"logo16.png"},
   "background":
     {
         "scripts": ["jquery-2.1.4.js", "find.js"]
     },
 
   "browser_action": {
-    "default_icon": "icon.png",
+    "default_icon": "logo19.png",
     "default_popup": "find.html"
   },
   "content_scripts":[
