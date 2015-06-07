@@ -69,7 +69,7 @@ class Tag(object):
         exerpt = []
         with open(path, 'r') as f:
             for i in range(self.linenum):
-                line = f.readline().strip()
+                line = f.readline()
             exerpt.append(line)
             for i in range(5):
                 l = f.readline()
@@ -78,7 +78,7 @@ class Tag(object):
                 exerpt.append(l)
 
         # this snippet is only set after tag has been populated
-        self.snippet = line
+        self.snippet = line[:].strip()
         self.exerpt = ''.join(exerpt)
 
     def to_json(self):
