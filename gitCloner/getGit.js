@@ -13,16 +13,16 @@ if(!which('git')){
 var reposDir = 'repos';
 //END - Globals
 
-exports.cloneFromGit = function(url,line,snippet){
+exports.cloneFromGit = function(url){
     var user        = '';
     var repoUrl     = '';
     var repo        = '';
     var piecesOfUrl = url.split('/');
-    for (i=0; i<5; i++){
+    for (i=0; i < 5; i++){
         repoUrl += piecesOfUrl[i]+'/';
-        if (i==4)
+        if (i == 4)
             repo = piecesOfUrl[i];
-        if (i==3)
+        if (i == 3)
             user = piecesOfUrl[i];
     }
 
