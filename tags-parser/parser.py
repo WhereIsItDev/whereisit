@@ -35,13 +35,19 @@ class Tag(object):
         self.tagname = args[0]
         self.tagfile = args[1]
         self.tagaddress = args[2]
+        self.filepath = '/'.join(self.tagfile.split('/')[3:])
         self.linenum = int(self.tagaddress.split(';')[0])
+        self.kind = None
+        self.member_of = None
+        self.member_of_kind = None
+        self.member_of_name = None
         self.parse_tagfields(*args[3:])
 
     def parse_tagfields(self, *args):
         for arg in args:
             if not arg:
                 continue
+            arg = arg.strip()
             if arg == 'm':
                 self.kind = 'method'
             elif arg == 'c':
@@ -52,6 +58,37 @@ class Tag(object):
                 self.member_of_kind = kind
                 self.member_of_name = name
 
+    def read_snippet(self):
+        """A tag has information on the filename,
+        and also the line where this tag can be found.
+
+        >>> name = 'repos/danielcodes/Algorithms/Seven/Graph.java'
+        >>> tag = Tag(name, name, '4;"')
+        """
+        path = self.tagfile
+        with open(path, 'r') as f:
+            for i in range(self.linenum):
+                line = f.readline().strip()
+
+        # this snippet is only set after tag has been populated
+        self.snippet = line
+        self.exerpt = []
+
+    def to_json(self):
+        """
+        >>> name = 'repos/danielcodes/Algorithms/Seven/Graph.java'
+        >>> tag = Tag(name, name, '4;"')
+        """
+        # impt, ensure that file is read
+        if not hasattr(self, 'snippet'):
+            self.read_snippet()
+
+        obj = {}
+        for field in ['filepath', 'linenum', 'kind', 'snippet',
+                'member_of', 'member_of_kind', 'member_of_name',]:
+            obj[field] = getattr(self, field)
+        return obj
+
     def __str__(self):
         return '(%s)(%s)(%s)' % (self.tagname, self.tagfile, self.tagaddress)
 
@@ -59,38 +96,11 @@ class Tag(object):
         return str(self)
 
 
-class SnippetEncoder(json.JSONEncoder):
+class TagEncoder(json.JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, Snippet):
+        if isinstance(obj, Tag):
             return obj.to_json()
         return json.JSONEncoder.default(self, obj)
-
-
-class Snippet(object):
-    def __init__(self, localpath, linenum, snippet, exerpt=None):
-        self.filepath = '/'.join(localpath.split('/')[3:])
-        self.linenum = linenum
-        self.snippet = snippet
-        self.exerpt = exerpt
-
-    def to_json(self):
-        """
-        >>> snippet = Snippet('repos/u/p/path', 1, 'snippet')
-        >>> snippet.to_json()
-        {'snippet': 'snippet', 'linenum': 1, 'filepath': 'path'}
-        """
-        return {
-            'filepath': self.filepath,
-            'linenum': self.linenum,
-            'snippet': self.snippet,
-        }
-
-    def __str__(self):
-        return '(%s)(%s)(%s)' % (
-            self.filepath, self.linenum, self.snippet)
-
-    def __repr__(self):
-        return str(self)
 
 
 def make_tags(lines):
@@ -126,24 +136,6 @@ def lookup_tagname(tagname, tags):
             yield tag
 
 
-def get_snippet(tag):
-    """A tag has information on the filename,
-    and also the line where this tag can be found.
-
-    >>> name = 'repos/danielcodes/Algorithms/Seven/Graph.java'
-    >>> tag = Tag(name, name, '4;"')
-    >>> get_snippet(tag)
-    (Seven/Graph.java)(4)(public class Graph)
-    """
-    path = tag.tagfile
-    linenum = tag.linenum
-    with open(path, 'r') as f:
-        for i in range(linenum):
-            line = f.readline().strip()
-    exerpt = []
-    return Snippet(path, linenum, line, exerpt)
-
-
 def main(tagname, tagsfile):
     """
     # >>> snippets = main('$.fn.flexAddData', 'Flexigrid')
@@ -156,8 +148,7 @@ def main(tagname, tagsfile):
     """
     tags = make_tags(open(tagsfile))
     candidates = lookup_tagname(tagname, tags)
-    snippets = map(get_snippet, candidates)
-    return json.dumps(snippets, cls=SnippetEncoder)
+    return json.dumps(list(candidates), cls=TagEncoder)
 
 
 def gen_ctags(repo_path):
