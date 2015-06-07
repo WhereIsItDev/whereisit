@@ -9,14 +9,11 @@ if(!which('git')){
 //END - Verifying for reqs...
 
 //Globals
+// file should be run using scripts/runserver from root dir
 var reposDir = 'repos';
 //END - Globals
 
 exports.cloneFromGit = function(url,line,snippet){
-    //var url     = 'https://github.com/paulopmx/Flexigrid/blob/master/js/flexigrid.js';
-    //var line    = 13;
-    //var snippet = 'function';
-
     var user        = '';
     var repoUrl     = '';
     var repo        = '';
