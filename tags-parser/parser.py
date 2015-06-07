@@ -66,13 +66,20 @@ class Tag(object):
         >>> tag = Tag(name, name, '4;"')
         """
         path = self.tagfile
+        exerpt = []
         with open(path, 'r') as f:
             for i in range(self.linenum):
                 line = f.readline().strip()
+            exerpt.append(line)
+            for i in range(5):
+                l = f.readline()
+                if l == '':
+                    break
+                exerpt.append(l)
 
         # this snippet is only set after tag has been populated
         self.snippet = line
-        self.exerpt = []
+        self.exerpt = ''.join(exerpt)
 
     def to_json(self):
         """
@@ -85,7 +92,7 @@ class Tag(object):
 
         obj = {}
         for field in ['filepath', 'linenum', 'kind', 'snippet',
-                'member_of', 'member_of_kind', 'member_of_name',]:
+                'member_of', 'member_of_kind', 'member_of_name', 'exerpt']:
             obj[field] = getattr(self, field)
         return obj
 
