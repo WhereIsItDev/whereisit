@@ -1,6 +1,9 @@
 PROD = "http://45.33.82.241:8880";
 DEV = "http://localhost:8080";
 
+var backgroundPage = chrome.extension.getBackgroundPage();
+var openInNewTab = backgroundPage.open;
+
 /**
  * Given a user selection, make the API call to server
  * and populate the background html
@@ -10,12 +13,17 @@ function findit(data) {
   $status = $('#status');
   function addToDom(resp) {
     resp.forEach(function(v) {
-      var html = template.replace('$LINK', link(v.filepath))
+      var html = template.replace('$LINK', link(v.filepath, location, v.linenum))
       .replace('$PATH', v.filepath)
       .replace('$LINE', v.linenum)
       .replace('$EXCERPT', v.exerpt);
       $status.append($(html));
     });
+    $status.find('.link').click(function(event) {
+      console.log(event);
+      var url = event.target.href;
+      openInNewTab(url);
+    })
   }
 
   sendrequest({
@@ -62,8 +70,14 @@ function getCurrentTab(cb) {
   });
 }
 
-var link = function(path) {
-  return path;
+var link = function(path, location, line) {
+  var piecesOfUrl = location.split('/');
+  var repo = piecesOfUrl[4];
+  var user = piecesOfUrl[3];
+  url = ['https://github.com', user, repo, 'blob', 'master', path].join('/');
+  url += '#l' + line
+  console.log(url);
+  return url;
 }
 
 var template = '<div class="result">' +
