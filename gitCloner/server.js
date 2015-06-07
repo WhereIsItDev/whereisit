@@ -26,8 +26,7 @@ app.post('/',function(req,res){
 
     results = ctags.run(snippet, repoPath);
 
-    // TODO: return as a JSON response
-    return res.send(results);
+    return res.json(results);
 });
 
 

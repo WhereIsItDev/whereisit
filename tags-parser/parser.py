@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # AngelHack Brooklyn 2015
+import os
 import json
 import subprocess
 import sys
@@ -39,8 +40,8 @@ class SnippetEncoder(json.JSONEncoder):
 
 
 class Snippet(object):
-    def __init__(self, filepath, linenum, snippet):
-        self.filepath = filepath
+    def __init__(self, localpath, linenum, snippet):
+        self.filepath = '/'.join(localpath.split('/')[3:])
         self.linenum = linenum
         self.snippet = snippet
 
@@ -131,9 +132,11 @@ def main(tagname, tagsfile):
 
 
 def gen_ctags(repo_path):
-    tags_path = repo_path + 'tags'
-    subprocess.call(
-        ['ctags', '-f', tags_path, '-R', '--excmd=number', repo_path])
+    tags_path = os.path.join(repo_path, 'tags')
+    with open('error.log', 'a') as f:
+        subprocess.check_output(
+            ['ctags', '-f', tags_path, '-R', '--excmd=number', repo_path],
+            stderr=f)
     return tags_path
 
 

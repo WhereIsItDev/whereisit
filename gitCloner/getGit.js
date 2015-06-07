@@ -9,15 +9,11 @@ if(!which('git')){
 //END - Verifying for reqs...
 
 //Globals
-var baseDir  = __dirname + '/';
-var reposDir = baseDir + '../repos';
+// file should be run using scripts/runserver from root dir
+var reposDir = 'repos';
 //END - Globals
 
 exports.cloneFromGit = function(url,line,snippet){
-    //var url     = 'https://github.com/paulopmx/Flexigrid/blob/master/js/flexigrid.js';
-    //var line    = 13;
-    //var snippet = 'function';
-
     var user        = '';
     var repoUrl     = '';
     var repo        = '';
@@ -40,8 +36,8 @@ exports.cloneFromGit = function(url,line,snippet){
         }
     }else{
         oldDir = pwd();
-        cd(reposDir+'/'+user+'/'+repo);
-        var ret = exec('git merge origin master');
+        cd(repoPath);
+        var ret = exec('git pull');
         if(ret.code=="0"){
             cd(oldDir);
             return repoPath;
