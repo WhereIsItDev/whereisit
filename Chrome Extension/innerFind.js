@@ -1,18 +1,43 @@
 PROD = "http://45.33.82.241:8880";
 DEV = "http://localhost:8080";
 
-var backgroundPage = chrome.extension.getBackgroundPage();
-var openInNewTab = backgroundPage.open;
+var openInNewTab = function(url) {
+  var backgroundPage = chrome.extension.getBackgroundPage();
+  backgroundPage.open(url);
+};
 
 /**
  * Given a user selection, make the API call to server
  * and populate the background html
  */
 function findit(data) {
-  var userSelection = data.text, location = data.location;
-  $status = $('#status');
-  $status.find('#search').text(userSelection);
+  var userSelection = data.text;
+  var location = data.location;
+  var cachedResults = data.cached;
+
+  if (cachedResults !== undefined) {
+    console.log('using cached results:' + cachedResults);
+    addToDom(cachedResults);
+    return;
+  }
+
+  function cachedAddToDom(resp) {
+    // background page is reloaded everytime it's clicked
+    // so we sent a mesage to the current tab to use its cache
+    getCurrentTab(function(tab) {
+      chrome.tabs.sendMessage(
+        tab.id, {
+          text: "cachethis",
+          cacheKey: userSelection,
+          cacheValue: resp
+        });
+      addToDom(resp);
+    })
+  }
+
   function addToDom(resp) {
+    $status = $('#status');
+    $status.find('#search').text(userSelection);
     resp.forEach(function(v) {
       var html = template.replace('$LINK', link(v.filepath, location, v.linenum))
       .replace('$PATH', v.filepath)
@@ -21,7 +46,6 @@ function findit(data) {
       $status.append($(html));
     });
     $status.find('.link').click(function(event) {
-      console.log(event);
       var url = event.target.href;
       openInNewTab(url);
     })
@@ -32,7 +56,7 @@ function findit(data) {
   sendrequest({
     snippet: userSelection,
     url: location,
-  }, addToDom);
+  }, cachedAddToDom);
 }
 
 function sendrequest(data, callback){
@@ -97,6 +121,7 @@ var template = '<div class="result">' +
     '</div>' +
   '</div>';
 
+/* dummy resp for testing */
 var jsonresp = [{
   "exerpt": "public Graph(int number, double[][] adjMatrix)    {\n        //creates a graph with 'number' vertices\n        this.vertices = new Vertex[number];\n\n        //vertices must also be initialized\n",
   "kind": "method",
