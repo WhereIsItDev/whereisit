@@ -19,6 +19,8 @@ exports.cloneFromGit = function(url){
     var repoUrl     = '';
     var repo        = '';
     var piecesOfUrl = url.split('/');
+
+    piecesOfUrl[0] = "git:";
     for (i=0; i < 5; i++){
         repoUrl += piecesOfUrl[i]+'/';
         if (i == 4)
