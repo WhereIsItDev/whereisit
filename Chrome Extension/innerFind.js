@@ -58,12 +58,9 @@ function findit(data) {
   function addToDom(resp) {
     $status = $('#status');
     $status.find('#search').text(userSelection);
-    resp.forEach(function(v) {
-      var html = template.replace('$LINK', link(v.filepath, location, v.linenum))
-      .replace('$PATH', v.filepath)
-      .replace('$LINE', v.linenum)
-      $status.append($(html));
-      $status.find('pre').text(v.exerpt);
+    var status = document.getElementById('status');
+    html = resp.forEach(function(v) {
+      $status.append(makeResult(v, location));
     });
     $status.find('.link').click(function(event) {
       var url = event.target.href;
@@ -141,7 +138,7 @@ function getCurrentTab(cb) {
   });
 }
 
-var link = function(path, location, line) {
+var makeLink = function(path, location, line) {
   var piecesOfUrl = location.split('/');
   var repo = piecesOfUrl[4];
   var user = piecesOfUrl[3];
@@ -150,13 +147,23 @@ var link = function(path, location, line) {
   return url;
 }
 
+var makeResult = function(v, location) {
+  var $template = $(template);
+  var link = makeLink(v.filepath, location, v.linenum);
+  $template.find('.link')
+    .attr('href', link)
+    .text(v.filepath + '(line ' + v.linenum + ')');
+  $template.find('.snippet pre')
+    .text(v.exerpt);
+  return $template;
+}
+
 var template = '<div class="result">' +
-    '<div id="path">' +
-      '<a class="link" href="$LINK">$PATH (line $LINE)</a>' +
+    '<div class="path">' +
+      '<a class="link"></a>' +
     '</div>' +
-    '<div id="snippet">' +
-      '<pre>' +
-      '</pre>' +
+    '<div class="snippet">' +
+      '<pre></pre>' +
     '</div>' +
   '</div>';
 
