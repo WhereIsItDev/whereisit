@@ -1,29 +1,44 @@
 PROD = "http://45.33.82.241:8880";
 DEV = "http://localhost:8080";
+SERVER_URL = DEV;
 
-var openInNewTab = function(url) {
-  var backgroundPage = chrome.extension.getBackgroundPage();
-  backgroundPage.open(url);
-};
+function hideInfo() {
+  $("#title").hide();
+  $("#selSom").hide();
+  $("#spinner").hide();
+}
 
+function loading() {
+  $("#spinner").show();
+}
+
+function failMessage() {
+  $('#fail-msg').show();
+}
 
 function findstuff(data) {
   var userSelection = data.text;
   var location = data.location;
   var cachedResults = data.cached;
   var callback = data.callback;
-  var cachedResults = data.cached;
+
+  function success(resp) {
+    hideInfo();
+    callback(resp);
+  }
+
+  loading();
 
   if (cachedResults !== undefined) {
     console.log('using cached results:' + cachedResults);
-    callback(cachedResults);
+    success(cachedResults);
     return;
   }
 
-  sendrequest({
+  sendRequest({
     snippet: userSelection,
     url: location,
-  }, callback);
+  }, success, function() {});
 }
 
 /**
@@ -33,13 +48,6 @@ function findstuff(data) {
 function findit(data) {
   var userSelection = data.text;
   var location = data.location;
-  var cachedResults = data.cached;
-
-  if (cachedResults !== undefined) {
-    console.log('using cached results:' + cachedResults);
-    addToDom(cachedResults);
-    return;
-  }
 
   function cachedAddToDom(resp) {
     // background page is reloaded everytime it's clicked
@@ -60,66 +68,42 @@ function findit(data) {
     $status.find('#search').text(userSelection);
     var status = document.getElementById('status');
     html = resp.forEach(function(v) {
-      $status.append(makeResult(v, location));
+      $status.append(makeResultHtml(v, location));
     });
-    $status.find('.link').click(function(event) {
-      var url = event.target.href;
-      openInNewTab(url);
-    })
-    $("#spinner").hide();
-    $("#selSom").hide();
     $("#title").show();
   }
 
-  sendrequest({
-    snippet: userSelection,
-    url: location,
-  }, cachedAddToDom);
+  data.callback = cachedAddToDom;
+
+  findstuff(data)
 }
 
-function sendrequest(data, callback){
-    $("#spinner").show();
-    $("#title").hide();
-    $("#selSom").hide();
-    var form = new FormData();
-    form.append("snippet", data.snippet);
-    form.append("url", data.url);
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", PROD, true);
-    xhr.onreadystatechange = function(data,req) {
-      if (xhr.readyState == 4) {
-        var jsonResponse = JSON.parse(data.target.responseText);
-        console.log('JSON response from server: ' + jsonResponse);
-        callback(jsonResponse)
-      }
-    }
-    xhr.send(form);
+/* Make the ajax call to server */
+function sendRequest(data, success, failure) {
+  $.ajax({
+    url: SERVER_URL,
+    method: 'POST',
+    data: JSON.stringify({'snippet': data.snippet, 'url': data.url}),
+    contentType: 'application/json; charset=utf-8'
+  }).done(function(resp) {
+    console.log('JSON response from server: ' + resp);
+    success(resp);
+  }).fail(function(resp) {
+    console.log('fail ' + resp);
+    failure(resp);
+  })
 }
 
 /**
  * Triggered when user clicks on the action button
  */
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('project-link').addEventListener('click', function(event) {
-    openInNewTab(event.target.href);
-  })
   var search = window.location.search.substring(1);
-  console.log(search);
   if (search) {
-    var splits = search.split('&', 2);
-    var selection = splits[0].substring('selection'.length + 1);
-    var location = splits[1].substring('location'.length + 1);
-    findstuff({
-      'text': selection,
-      'location': location,
-      'callback': function(r) {
-        var result = r[0];
-        var url = link(result.filepath, location, result.linenum);
-        window.location.href = url;
-      }
-    });
+    // a result of a right click from user
+    contextMenuAction(search)
   } else {
+    // user clicks on the action in the toolbar
     getCurrentTab(function(tab) {
       chrome.tabs.sendMessage(
         tab.id, { text: "whereisit" }, findit);
@@ -127,28 +111,49 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-function getCurrentTab(cb) {
+function contextMenuAction(search) {
+  var splits = search.split('&', 2);
+  var selection = splits[0].substring('selection'.length + 1);
+  var location = splits[1].substring('location'.length + 1);
+  findstuff({
+    'text': selection,
+    'location': location,
+    'callback': redirectToFirstResult(location)
+  });
+}
+
+function redirectToFirstResult(location) {
+  return function(results) {
+    var result = results[0];
+    var url = makeLink(result.filepath, location, result.linenum);
+    window.location.href = url;
+  }
+}
+
+function getCurrentTab(callback) {
   var queryInfo = {
     active: true,
     currentWindow: true
   };
   chrome.tabs.query(queryInfo, function(tabs) {
-    var tab = tabs[0];
-    cb(tab);
+    callback(tabs[0]);
   });
 }
 
-var makeLink = function(path, location, line) {
-  var piecesOfUrl = location.split('/');
-  var repo = piecesOfUrl[4];
-  var user = piecesOfUrl[3];
-  url = ['https://github.com', user, repo, 'blob', 'master', path].join('/');
+function makeLink(path, location, line) {
+  var splits = location.split('/');
+  var github = 'https://github.com';
+  var user = splits[3];
+  var repo = splits[4];
+  var blob = splits[5] || 'blob';
+  var branch = splits[6] || 'master';
+  url = [github, user, repo, blob, branch, path].join('/');
   url += '#l' + line;
   return url;
 }
 
-var makeResult = function(v, location) {
-  var $template = $(template);
+function makeResultHtml(v, location) {
+  var $template = $(resultTemplate);
   var link = makeLink(v.filepath, location, v.linenum);
   $template.find('.link')
     .attr('href', link)
@@ -158,33 +163,11 @@ var makeResult = function(v, location) {
   return $template;
 }
 
-var template = '<div class="result">' +
+var resultTemplate = '<div class="result">' +
     '<div class="path">' +
-      '<a class="link"></a>' +
+      '<a class="link" target="_blank"></a>' +
     '</div>' +
     '<div class="snippet">' +
       '<pre></pre>' +
     '</div>' +
   '</div>';
-
-/* dummy resp for testing */
-var jsonresp = [{
-  "exerpt": "public Graph(int number, double[][] adjMatrix)    {\n        //creates a graph with 'number' vertices\n        this.vertices = new Vertex[number];\n\n        //vertices must also be initialized\n",
-  "kind": "method",
-  "member_of": "class:Graph",
-  "filepath": "Seven/Graph.java",
-  "snippet": "public Graph(int number, double[][] adjMatrix)",
-  "linenum": 10,
-  "member_of_kind": "class",
-  "member_of_name": "Graph"
-}, {
-  "exerpt": "public Graph(int number, double[][] adjMatrix)    {\n        //creates a graph with 'number' vertices\n        this.vertices = new Vertex[number];\n\n        //vertices must also be initialized\n",
-  "kind": "method",
-  "member_of": "class:Graph",
-  "filepath": "Seven/Graph.java",
-  "snippet": "public Graph(int number, double[][] adjMatrix)",
-  "linenum": 10,
-  "member_of_kind": "class",
-  "member_of_name": "Graph"
-}
-];

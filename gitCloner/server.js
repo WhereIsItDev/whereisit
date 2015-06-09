@@ -1,17 +1,16 @@
 var express    = require('express');
 var bodyParser = require('body-parser');
-var multer     = require('multer');
 var app        = express();
 
 var getGit     = require("./getGit");
 var ctags = require("./ctags");
 var cache = require('./cache');
 
-app.use(bodyParser.json());
-app.use(multer());
+var jsonParser = bodyParser.json();
 
-app.post('/',function(req,res){
+app.post('/', jsonParser, function(req,res){
     echo("someone connected");
+    console.log(req.body);
     url     = req.body.url;
     snippet = req.body.snippet;
 

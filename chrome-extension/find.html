@@ -68,10 +68,14 @@
   </style>
   </head>
   <body>
+  <div id="spinner">
+    <img src="spinner.gif">
+    Loading...
+  </div>
   <div id="status">
     <div id="selSom">
       <h2>
-        <a id="project-link" class="link" href="https://www.github.com/ngzhian/whereisit">whereisit</a>
+        <a href="https://www.github.com/ngzhian/whereisit" target="_blank">whereisit</a>
       </h2>
       <p>Looks up code definition so you don't have to!</p>
       <p>Highlight a piece of code you would like to lookup the definition for, and click this button again</p>
@@ -129,7 +133,9 @@
         </ul>
       </div>
     </div>
-    <img id="spinner" src="spinner.gif">
+    <div id="fail-msg" class="alert alert-danger" style="display: none;">
+      Failed to retrieve info, please try again!
+    </div>
     <div id="title">results for
       <strong id="search"></strong>
     </div>
