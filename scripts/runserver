@@ -1,1 +1,1 @@
-nodejs gitCloner/server.js
+forever start gitCloner/server.js
