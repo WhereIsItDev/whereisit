@@ -7,7 +7,8 @@
     "body-parser": "~1.12.4",
     "express": "~4.12.4",
     "multer": "~0.1.8",
-    "shelljs": "~0.5.1"
+    "shelljs": "~0.5.1",
+    "forever": "~0.14.1"
   },
   "devDependencies": {},
   "scripts": {
