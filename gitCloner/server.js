@@ -9,14 +9,15 @@ var cache = require('./cache');
 var jsonParser = bodyParser.json();
 
 app.post('/', jsonParser, function(req,res){
-    echo("someone connected");
-    console.log(req.body);
+    console.log("someone connected");
     url     = req.body.url;
     snippet = req.body.snippet;
 
     if (url == null || snippet == null) {
-        return res.send(" "+(-2));
+        return res.sendStatus(404);
     }
+
+    console.log('request for ' + snippet + ' @ ' + url);
 
     cacheValue = cache.get(url, snippet)
 
@@ -27,9 +28,8 @@ app.post('/', jsonParser, function(req,res){
 
     var repoPath = getGit.cloneFromGit(url);
     if (repoPath == null) {
-        return res.send(" "+(-2));
+        return res.sendStatus(404);
     }
-    console.log(repoPath);
 
     results = ctags.run(snippet, repoPath);
 

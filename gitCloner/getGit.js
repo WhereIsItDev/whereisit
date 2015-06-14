@@ -1,20 +1,10 @@
 require ('shelljs/global');
 
-//Verifying for reqs...
-if(!which('git')){
-    echo ('you have NO git, dumb.');
-}else{
-    echo('You rock! (and have git)');
-}
-//END - Verifying for reqs...
-
-//Globals
 // file should be run using scripts/runserver from root dir
 var reposDir  = 'repos';
 var lastCheck = {};
-//END - Globals
 
-exports.cloneFromGit = function(url){
+exports.cloneFromGit = function(url) {
     var user        = '';
     var repoUrl     = '';
     var repo        = '';
@@ -29,9 +19,7 @@ exports.cloneFromGit = function(url){
             user = piecesOfUrl[i];
     }
 
-
     repoPath = [reposDir, user, repo].join('/');
-    console.log('repoPath=' + repoPath);
 
     var timeNow = Date.now() / 1000 | 0;
 
@@ -51,13 +39,13 @@ exports.cloneFromGit = function(url){
         mkdir('-p', repoPath);
         var ret = exec('git clone --depth 1 ' + repoUrl + ' ' + repoPath);
         if (ret.code=="0") {
-            echo("Yahoooooo!!!! You've cloned your stuff!!!");
+            echo('clone successful: ' + repoPath);
             return repoPath;
         }
     } else {
         oldDir = pwd();
         cd(repoPath);
-        echo("Pulling!");
+        echo('repo already exists, updating');
         var ret = exec('git pull');
         if (ret.code=="0") {
             cd(oldDir);
