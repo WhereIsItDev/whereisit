@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "Where is it?",
-  "description": "Searches through Github repository to find method definition",
-  "version": "0.0.0.93",
+  "description": "Whereisit is an extension that helps you to easily find the references on repositories in an online fashion.",
+  "version": "0.0.0.94",
   "icons":{"128":"logo128.png","19":"logo19.png","16":"logo16.png"},
   "background":
     {
