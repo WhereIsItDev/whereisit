@@ -14,5 +14,14 @@ If it takes too long, please try the extension on these repositories:
 4. [jquery/jquery](https://github.com/jquery/jquery)
 5. [jekyll/jekyll](https://github.com/jekyll/jekyll)
 
+## Running this locally
+You'll need `nodejs`, `python`, [`ctags`](http://ctags.sourceforge.net/) installed.
+
+1. `cd` into gitCloner, and run `npm install`, this should get the backend node server running
+2. install `ctags` on your machine, usually it's `sudo apt-get install exuberant-ctags`
+3. inside the main `whereisit` folder, start the server using `./scripts/runserver`
+4. install the chrome extension (you need to be in developer mode for chrome)
+5. navigate to your favourite repository on GitHub and try it out!
+
 [![Join the chat at https://gitter.im/ngzhian/whereisit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ngzhian/whereisit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 where is it?
