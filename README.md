@@ -7,6 +7,7 @@ whereisit is a hack developed during the Angelhack Brooklyn 2015, by @celsopalme
 This has been released as a [chrome extension](https://chrome.google.com/webstore/detail/where-is-it/cdgnplmebagbialenimejpokfcodlkdm). Things may be slow at times or really buggy, especially if you are using the extension on a repo for the first time.
 
 If it takes too long, please try the extension on these repositories:
+
 1. [django/django](https://github.com/django/django/)
 2. [danielcodes/Algorithms](https://github.com/danielcodes/Algorithms/)
 3. [cocos2d/cocos2d-x](https://github.com/cocos2d/cocos2d-x/)
