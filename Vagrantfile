@@ -13,6 +13,11 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update
-    sudo apt-get install -y git nodejs npm exuberant-ctags
+    sudo apt-get install -y git nodejs npm exuberant-ctags python-pip
+    sudo pip install virtualenvwrapper
+    source /usr/local/bin/virtualenvwrapper.sh
+    mkvirtualenv whereisit
+    workon whereisit
+    pip install -r tags-parser/requirements.txt
   SHELL
 end
