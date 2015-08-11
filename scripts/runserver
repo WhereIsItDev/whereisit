@@ -1,1 +1,1 @@
-PATH=$PATH:./gitCloner/node_modules/.bin/ forever start gitCloner/server.js
+NODE_ENV=prod PATH=$PATH:./gitCloner/node_modules/.bin/ forever start gitCloner/server.js
