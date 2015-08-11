@@ -1,1 +1,0 @@
-NODE_ENV=dev PATH=$PATH:./gitCloner/node_modules/.bin/ nodemon gitCloner/server.js

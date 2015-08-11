@@ -18,7 +18,7 @@ app.post('/', jsonParser, function(req,res){
     return res.sendStatus(404);
   }
 
-  log.debug('snippet=' + snippet + ' url=' + url);
+  log.debug('event=query snippet=' + snippet + ' url=' + url);
 
   cacheValue = cache.get(url, snippet)
 
