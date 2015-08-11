@@ -1,6 +1,11 @@
 require ('shelljs/global');
 
-// e.g. run('runDijkstra', 'repos/danielcodes/Algorithms/')
+var Logger = require('le_node');
+var log = new Logger({
+  token:'5df84de4-2596-48ad-923d-42a21d0343fb',
+  console: true
+});
+
 exports.run = function(tagname, repopath) {
   script = './scripts/runctags';
 
@@ -10,9 +15,9 @@ exports.run = function(tagname, repopath) {
   tagname = tagname.replace(/\n.*/, '');
 
   cmd = [script, tagname, repopath].join(' ');
-  console.log('running cmd: ' + cmd);
+  log.debug('event=run_command command=' + cmd);
   var ret = exec(cmd, {silent:true});
-  console.log('result: ' + ret.output);
+  log.debug('event=run_command_success result=' + ret.output);
   candidates = JSON.parse(ret.output);
   return candidates;
 }
