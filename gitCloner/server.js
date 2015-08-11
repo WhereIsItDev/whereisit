@@ -7,11 +7,7 @@ var getGit     = require("./getGit");
 var ctags = require("./ctags");
 var cache = require('./cache');
 
-var Logger = require('le_node');
-var log = new Logger({
-  token:'5df84de4-2596-48ad-923d-42a21d0343fb',
-  console: true
-});
+var log = require('./logging');
 
 app.post('/', jsonParser, function(req,res){
   log.debug('event=connected');

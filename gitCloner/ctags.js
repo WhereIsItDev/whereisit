@@ -1,10 +1,6 @@
 require ('shelljs/global');
 
-var Logger = require('le_node');
-var log = new Logger({
-  token:'5df84de4-2596-48ad-923d-42a21d0343fb',
-  console: true
-});
+var log = require('./logging');
 
 exports.run = function(tagname, repopath) {
   script = './scripts/runctags';
