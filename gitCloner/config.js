@@ -1,9 +1,12 @@
 var config = {};
 
-if (process.env.NODE_ENV === 'prod') {
-  config.LE_TOKEN = '6b18525b-4899-4a69-bf2c-714645a9554b'
+var isProd = process.env.NODE_ENV === 'prod';
+var isDev = !isProd;
+
+if (isProd) {
+  config.LE_TOKEN = 'b9d62caf-ba48-4151-84b8-a1a2f957f51a'
 } else {
-  config.LE_TOKEN = '5df84de4-2596-48ad-923d-42a21d0343fb';
+  config.LE_TOKEN = '681b893c-144f-479f-8442-4354db192afd';
 }
 
 module.exports = config
