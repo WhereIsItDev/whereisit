@@ -96,6 +96,11 @@ class Tag(object):
             obj[field] = getattr(self, field)
         return obj
 
+    def is_of_filetype(self, filetype):
+        if filetype is None:
+            return True
+        return self.filepath and self.filepath.endswith(filetype)
+
     def __str__(self):
         return '(%s)(%s)(%s)' % (self.tagname, self.tagfile, self.tagaddress)
 
@@ -128,7 +133,7 @@ def make_tags(lines):
         yield Tag(*parts)
 
 
-def lookup_tagname(tagname, tags):
+def lookup_tagname(tagname, tags, filetype=None):
     """Looks up a tag within a list of Tags via the tagname
 
     >>> tags = make_tags(SAMPLE_CTAGS_OUTPUT)
@@ -137,9 +142,12 @@ def lookup_tagname(tagname, tags):
     ($.addFlex)(Flexigrid/js/flexigrid.js)(69;")
     >>> results[1]
     ($.addFlex)(Flexigrid/js/flexigrid.js)(75;")
+    >>> results = list(lookup_tagname('$.addFlex', tags, 'java'))
+    >>> results
+    []
     """
     for tag in tags:
-        if tag.tagname == tagname:
+        if tag.tagname == tagname and tag.is_of_filetype(filetype):
             yield tag
 
 
