@@ -73,7 +73,19 @@ function findit(data) {
     $("#title").show();
   }
 
-  data.callback = cachedAddToDom;
+  if (typeof(userSelection) === "undefined") {
+    data.callback = function(resp) {
+      getCurrentTab(function(tab) {
+        chrome.tabs.sendMessage(
+          tab.id, {
+            text: "addlinks",
+            tags: resp,
+          });
+      })
+    }
+  } else {
+    data.callback = cachedAddToDom;
+  }
 
   findstuff(data)
 }

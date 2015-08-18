@@ -17,13 +17,17 @@ app.post('/', function(req,res){
   snippet = req.body.snippet;
   wholeFile = req.body.ff;
 
-  if (url == null || snippet == null) {
+  if ((url == null || snippet == null) && (wholeFile === null)) {
     return res.sendStatus(404);
   }
 
   log.debug('event=query snippet=' + snippet + ' url=' + url);
 
-  cacheValue = cache.get(url, snippet)
+  if (url && snippet) {
+    cacheValue = cache.get(url, snippet);
+  } else {
+    cacheValue = null;
+  }
 
   if (cacheValue) {
     log.debug('event=web_server_cache');
@@ -43,7 +47,9 @@ app.post('/', function(req,res){
     results = ctags.run(snippet, repoPath);
   }
 
-  cache.store(url, snippet, results);
+  if (url && snippet) {
+    cache.store(url, snippet, results);
+  }
 
   return res.json(results);
 });
