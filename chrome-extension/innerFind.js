@@ -95,7 +95,7 @@ function sendRequest(data, success, failure) {
   $.ajax({
     url: SERVER_URL,
     method: 'POST',
-    data: JSON.stringify({'snippet': data.snippet, 'url': data.url}),
+    data: JSON.stringify({'snippet': data.snippet, 'url': data.url, 'ff': true}),
     contentType: 'application/json; charset=utf-8'
   }).done(function(resp) {
     console.log('JSON response from server: ' + resp);
