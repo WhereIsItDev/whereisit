@@ -15,6 +15,7 @@ app.post('/', function(req,res){
   log.debug('event=connected');
   url     = req.body.url;
   snippet = req.body.snippet;
+  wholeFile = req.body.ff;
 
   if (url == null || snippet == null) {
     return res.sendStatus(404);
@@ -34,7 +35,13 @@ app.post('/', function(req,res){
     return res.sendStatus(404);
   }
 
-  results = ctags.run(snippet, repoPath);
+  if (wholeFile === true) {
+    var p = url.split('/');
+    filePath = p.slice(7).join('/');
+    results = ctags.tag_file(filePath, repoPath);
+  } else {
+    results = ctags.run(snippet, repoPath);
+  }
 
   cache.store(url, snippet, results);
 
