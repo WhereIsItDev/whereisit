@@ -37,13 +37,23 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 
   if (msg.text && (msg.text == "addlinks")) {
     console.log('received msg to addLinks: ' + msg.tags);
+    msg_tags = {}
     msg.tags.forEach(function(v) {
-      var codeParent = $('#LC' + v.linenum);
-      var code = codeParent.children().filter(function(i, el) {
-        return $(this).text() == v.tagname;
-      });
-      var url = makeLink(v.filepath, window.location.href, v.linenum);
-      code.wrap('<a href="' + url + '" style="text-decoration: underline;"></a>');
-    });
+      msg_tags[v.tagname] = v;
+    })
+
+    /* this is super github specific
+     */
+    $('.blob-code').each(function() {
+      $.each(this.childNodes, function() {
+        var code = $(this);
+        tag = msg_tags[code.text().trim()];
+        if (tag) {
+          console.log('wrapping tag: ' + tag.tagname);
+          var url = makeLink(tag.filepath, window.location.href, tag.linenum);
+          code.wrap('<a href="' + url + '" style="text-decoration: underline;"></a>');
+        }
+      })
+    })
   }
 });

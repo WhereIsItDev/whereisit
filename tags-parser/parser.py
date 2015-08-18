@@ -184,8 +184,27 @@ def main(tag_name, code_file, repo_path):
 
     # looking for a all tags in a particular file
     if code_file:
-        tags_in_file = [tag for tag in tags if tag.tagfile == code_file]
+        names = get_names_from_file(code_file)
+        tags_dict = {tag.tagname: tag for tag in tags}
+        tags_in_file = [
+            tags_dict.get(name.get('name')) for name in names if name.get('name') in tags_dict]
         print json.dumps(tags_in_file, cls=TagEncoder)
+
+
+def get_names_from_file(code_file):
+    results = []
+    with open(code_file) as f:
+        for i, line in enumerate(f):
+            parts = filter(bool, re.split(r'[\W\(\,)\.,]+', line))
+            for name in parts:
+                index = line.index(name)
+                results.append({
+                    'name': name,
+                    'line': line,
+                    'start': index,
+                    'end': index - 1 + len(name)
+                })
+    return results
 
 
 if __name__ == '__main__':
