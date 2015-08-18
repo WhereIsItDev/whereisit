@@ -94,7 +94,7 @@ class Tag(object):
             self.read_snippet()
 
         obj = {}
-        for field in ['filepath', 'linenum', 'kind', 'snippet',
+        for field in ['tagname', 'filepath', 'linenum', 'kind', 'snippet',
                 'member_of', 'member_of_kind', 'member_of_name', 'exerpt']:
             obj[field] = getattr(self, field)
         return obj
