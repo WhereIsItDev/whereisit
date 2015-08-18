@@ -23,7 +23,6 @@ function findstuff(data) {
   var callback = data.callback;
 
   function success(resp) {
-    hideInfo();
     callback(resp);
   }
 
@@ -75,6 +74,7 @@ function findit(data) {
 
   if (typeof(userSelection) === "undefined") {
     data.callback = function(resp) {
+      $("#spinner").hide();
       getCurrentTab(function(tab) {
         chrome.tabs.sendMessage(
           tab.id, {
@@ -84,7 +84,10 @@ function findit(data) {
       })
     }
   } else {
-    data.callback = cachedAddToDom;
+    data.callback = function(resp) {
+      hideInfo();
+      cachedAddToDom(resp);
+    }
   }
 
   findstuff(data)
