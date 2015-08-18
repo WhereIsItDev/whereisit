@@ -1,19 +1,21 @@
 {
   "manifest_version": 2,
-
   "name": "Where is it?",
+  "version": "0.0.1",
+
+  "default_locale": "en",
   "description": "Whereisit is an extension that helps you to easily find the references on repositories in an online fashion.",
-  "version": "0.0.0.94",
   "icons":{"128":"logo128.png","19":"logo19.png","16":"logo16.png"},
-  "background":
-    {
-    "scripts": ["jquery-2.1.4.js", "shared.js", "find.js"]
-  },
 
   "browser_action": {
     "default_icon": "logo19.png",
     "default_popup": "find.html"
   },
+
+  "background": {
+    "scripts": ["jquery-2.1.4.js", "shared.js", "find.js"]
+  },
+
   "content_scripts":[
     {
       "matches":["*://github.com/*"],
@@ -25,6 +27,7 @@
         "run_at": "document_end"
     }
   ],
+  "homepage_url": "http://whereisit.io",
   "permissions": [
     "contextMenus",
     "activeTab",
