@@ -2,4 +2,4 @@
 # scripts are relative to the root dir of this repo
 # so it can find the tags-parser directory no problem
 
-python tags-parser/parser.py --tag_name $1 --repo_path $2
+python tags-parser/parser.py --code_file $1 --repo_path $2
