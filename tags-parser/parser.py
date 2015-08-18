@@ -2,10 +2,13 @@
 # AngelHack Brooklyn 2015
 import os
 import json
+import re
 import subprocess
 import sys
 
 from textwrap import dedent
+
+import click
 
 
 SAMPLE_CTAGS_OUTPUT = dedent("""\
@@ -151,21 +154,6 @@ def lookup_tagname(tagname, tags, filetype=None):
             yield tag
 
 
-def main(tagname, tagsfile):
-    """
-    # >>> snippets = main('$.fn.flexAddData', 'Flexigrid')
-    # >>> snippets[0].filepath
-    # 'Flexigrid/js/flexigrid.js'
-    # >>> snippets[0].linenum
-    # 1516
-    # >>> snippets[0].snippet
-    # '$.fn.flexAddData = function (data) { // function to add data to grid'
-    """
-    tags = make_tags(open(tagsfile))
-    candidates = lookup_tagname(tagname, tags)
-    return json.dumps(list(candidates), cls=TagEncoder)
-
-
 def gen_ctags(repo_path):
     tags_path = os.path.join(repo_path, 'tags')
     if os.path.exists(tags_path):
@@ -178,12 +166,29 @@ def gen_ctags(repo_path):
         return tags_path
 
 
+@click.command()
+@click.option('--tag_name', default=None, help='Tag name to lookup')
+@click.option('--code_file', default=None, help='Tag names of this file')
+@click.option('--repo_path', default=None, help='Path to repo')
+def main(tag_name, code_file, repo_path):
+    if not repo_path:
+        return
+
+    tags_path = gen_ctags(repo_path)
+    tags = make_tags(open(tags_path))
+
+    # looking for a single tag name
+    if tag_name:
+        candidates = list(lookup_tagname(tag_name, tags))
+        print json.dumps(candidates, cls=TagEncoder)
+
+    # looking for a all tags in a particular file
+    if code_file:
+        tags_in_file = [tag for tag in tags if tag.tagfile == code_file]
+        print json.dumps(tags_in_file, cls=TagEncoder)
+
+
 if __name__ == '__main__':
     # import doctest
     # doctest.testmod()
-    if len(sys.argv) == 3:
-        tagname = sys.argv[1]
-        repo_path = sys.argv[2]
-        tags_path = gen_ctags(repo_path)
-        snippets = main(tagname, tags_path)
-        print snippets
+    main()
