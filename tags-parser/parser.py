@@ -34,7 +34,7 @@ class Tag(object):
         'Graph'
         """
         if len(args) < 3:
-            raise Exception('bad args')
+            raise Exception('bad args: %s' % list(args))
         self.tagname = args[0]
         self.tagfile = args[1]
         self.tagaddress = args[2]
