@@ -186,10 +186,22 @@ def main(tag_name, code_file, repo_path):
     if code_file:
         names = get_names_from_file(code_file)
         tags_dict = {tag.tagname: tag for tag in tags}
-        tags_in_file = [
-            tags_dict.get(name.get('name')) for name in names if name.get('name') in tags_dict]
+        tags_in_file = []
+        for name in names:
+            tag = tags_dict.get(name['name'], None)
+            if tag and tag_and_file_same_extension(tag, code_file):
+                tags_in_file.append(tag)
         print json.dumps(tags_in_file, cls=TagEncoder)
 
+
+def tag_and_file_same_extension(tag, code_file):
+    return extension(code_file) == extension(tag.filepath)
+
+def extension(name):
+    splits = name.rsplit('.')
+    if len(splits) >= 2:
+        return splits[-1]
+    return name
 
 def get_names_from_file(code_file):
     results = []
