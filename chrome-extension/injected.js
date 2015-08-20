@@ -95,7 +95,6 @@ var breakTextAt = function(textNode, regex) {
     newTextNode.data = newTextNode.data.substr(matched.length);
     span = document.createElement('span');
     span.className = 'wii';
-    span.style.backgroundColor = 'blue';
     span.textContent = matched;
     textNode.parentNode.insertBefore(span, newTextNode);
   })
