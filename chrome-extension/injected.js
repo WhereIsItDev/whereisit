@@ -58,9 +58,6 @@ var traverseText = function(startNode, matches, callback) {
     // need this because mutating the dom causes this to enter infinite loop
     nextSibling = child.nextSibling;
     if (child.nodeType === 3) {
-      // if (child.data.indexOf('to_string') > 0) {
-      //   console.log('text: ' + child.data + ' matches? ' + matches(child));
-      // }
       if (matches(child)) {
         callback(child);
       }
