@@ -69,12 +69,7 @@ var traverseText = function(startNode, matches, callback) {
   return startNode;
 }
 
-var traverseMethodCalls = function(startNode, callback) {
-  function isMethod(node) {
-    match = node.data.match(/\.?\w+\(/);
-    hasClass = node.parentElement.classList.contains('pl-c1');
-    return (match && match.length > 0) || hasClass;
-  }
+var traverseMethodCalls = function(startNode, isMethod, callback) {
   traverseText(startNode, isMethod, callback);
 }
 
@@ -98,15 +93,21 @@ var breakTextAt = function(textNode, regex) {
   return span;
 }
 
+var language = guessFileExtension(window.location.pathname);
+
 function linkUpMethods(msg_tags) {
+  var lang = language();
+  console.log('loaded ' + lang.name);
   var codeContainer = document.getElementsByClassName('blob-wrapper')[0]
   traverseMethodCalls(
     codeContainer,
+    lang.isMethod,
     function(textNode) {
-      matches = textNode.data.match(/\.?\w+\(/) || [];
+      matches = lang.matchMethodCalls(textNode.data);
       matches.forEach(function(match) {
-        match = match.replace(/[.(]/g, '');
+        match = lang.stripMethodCall(match);
         tag = msg_tags[match];
+        console.log('match: ' + match + ' tag: ' + tag);
         if (tag) { linkTag(tag, textNode); }
       })
     }

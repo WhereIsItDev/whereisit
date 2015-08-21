@@ -20,6 +20,8 @@
       "matches":["*://github.com/*"],
       "js":[
         "shared.js",
+        "language.js",
+        "file-extension.js",
         "injected.js",
         "innerFind.js",
         "jquery-2.1.4.js"],
