@@ -8,12 +8,29 @@ function getSelectedText() {
   return text.trim();
 }
 
+function isGitHubUrl(url) {
+  var ORIGIN_RE = /https?:\/\/github.com/;
+  return url.search(ORIGIN_RE) !== -1;
+}
+
 cache = {}
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
   if (msg.text && (msg.text == "whereisit")) {
-    var text = getSelectedText();
-    var location = window.location.origin + window.location.pathname;
+    if (!isGitHubUrl(window.location.origin)) {
+      console.log('Not a GitHub page.');
+      return;
+    }
+
+    var codeBlocks = document.getElementsByClassName('blob-wrapper');
+    if (codeBlocks.length <= 0) {
+      console.log('Page does not contain code');
+      return;
+    }
+
+  var hasCode = codeBlocks.length > 0;
+    var text = msg.selection || getSelectedText();
+    var location = msg.location || (window.location.origin + window.location.pathname);
     if (text) {
       console.log('User selection is: ' + text);
       console.log(location);

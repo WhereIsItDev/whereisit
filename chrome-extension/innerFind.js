@@ -109,50 +109,12 @@ function sendRequest(data, success, failure) {
   })
 }
 
-/**
- * Triggered when user clicks on the action button
- */
-document.addEventListener('DOMContentLoaded', function() {
-  var search = window.location.search.substring(1);
-  if (search) {
-    // a result of a right click from user
-    contextMenuAction(search)
-  } else {
-    // user clicks on the action in the toolbar
-    getCurrentTab(function(tab) {
-      chrome.tabs.sendMessage(
-        tab.id, { text: "whereisit" }, findit);
-    })
-  }
-});
-
-function contextMenuAction(search) {
-  var splits = search.split('&', 2);
-  var selection = splits[0].substring('selection'.length + 1);
-  var location = splits[1].substring('location'.length + 1);
-  findstuff({
-    'text': selection,
-    'location': location,
-    'callback': redirectToFirstResult(location)
-  });
-}
-
 function redirectToFirstResult(location) {
   return function(results) {
     var result = results[0];
     var url = makeLink(result.filepath, location, result.linenum);
     window.location.href = url;
   }
-}
-
-function getCurrentTab(callback) {
-  var queryInfo = {
-    active: true,
-    currentWindow: true
-  };
-  chrome.tabs.query(queryInfo, function(tabs) {
-    callback(tabs[0]);
-  });
 }
 
 function makeResultHtml(v, location) {
