@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
       return;
     }
 
-  var hasCode = codeBlocks.length > 0;
+    var hasCode = codeBlocks.length > 0;
     var text = msg.selection || getSelectedText();
     var location = msg.location || (window.location.origin + window.location.pathname);
     if (text) {
