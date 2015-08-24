@@ -21,7 +21,6 @@ function findstuff(data) {
   var location = data.location;
   var cachedResults = data.cached;
   var callback = data.callback;
-  var ff = data.ff;
 
   function success(resp) {
     callback(resp);
@@ -35,10 +34,13 @@ function findstuff(data) {
     return;
   }
 
+  var url = SERVER_URL + (data.ff ? '/file' : '');
+  console.log(url);
+
   sendRequest({
+    url: url,
     snippet: userSelection,
-    url: location,
-    ff: ff
+    location: location,
   }, success, function() {});
 }
 
@@ -100,9 +102,9 @@ function findit(data) {
 /* Make the ajax call to server */
 function sendRequest(data, success, failure) {
   $.ajax({
-    url: SERVER_URL,
+    url: data.url,
     method: 'POST',
-    data: JSON.stringify({'snippet': data.snippet, 'url': data.url, 'ff': data.ff}),
+    data: JSON.stringify({'snippet': data.snippet, 'url': data.location}),
     contentType: 'application/json; charset=utf-8'
   }).done(function(resp) {
     console.log('JSON response from server: ' + resp);

@@ -11,22 +11,48 @@ var cache = require('./cache');
 
 var log = require('./logging');
 
+app.post('/file', function(req,res){
+  log.debug('event=connected');
+  url = req.body.url;
+
+  if (url === null) {
+    return res.sendStatus(404);
+  }
+
+  var repoPath = getGit.cloneFromGit(url);
+  if (repoPath == null) {
+    return res.sendStatus(404);
+  }
+
+  var p = url.split('/');
+  filePath = p.slice(7).join('/');
+
+  var cacheValue = cache.getFileTags(filePath, repoPath);
+  if (cacheValue) {
+    log.debug('event=web_server_cache');
+    return res.json(cacheValue);
+  }
+
+  results = ctags.tag_file(filePath, repoPath);
+  cache.storeFileTags(filePath, repoPath, results);
+
+  return res.json(results);
+});
+
 app.post('/', function(req,res){
   log.debug('event=connected');
   url     = req.body.url;
   snippet = req.body.snippet;
-  wholeFile = req.body.ff;
 
-  if ((url == null || snippet == null) && (wholeFile === null)) {
+  if (url == null || snippet == null) {
     return res.sendStatus(404);
   }
 
   log.debug('event=query snippet=' + snippet + ' url=' + url);
 
+  cacheValue = null;
   if (url && snippet) {
     cacheValue = cache.getUrlSnippet(url, snippet);
-  } else {
-    cacheValue = null;
   }
 
   if (cacheValue) {
@@ -41,10 +67,6 @@ app.post('/', function(req,res){
 
   if (url && snippet) {
     results = ctags.run(snippet, repoPath);
-  } else if (wholeFile === true) {
-    var p = url.split('/');
-    filePath = p.slice(7).join('/');
-    results = ctags.tag_file(filePath, repoPath);
   } else {
     return res.json();
   }
