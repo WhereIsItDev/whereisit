@@ -1,6 +1,7 @@
 require ('shelljs/global');
 
 var log = require('./logging');
+var emptyResult = [];
 
 exports.run = function(tagname, repopath) {
   script = './scripts/runctags';
@@ -12,7 +13,13 @@ exports.run = function(tagname, repopath) {
 
   cmd = [script, tagname, repopath].join(' ');
   log.debug('event=run_command command=' + cmd);
+
   var ret = exec(cmd, {silent:true});
+  if (ret.code !== 0) {
+    log.debug('event=run_command_fail message=' + ret.output);
+    return emptyResult;
+  }
+
   log.debug('event=run_command_success result=' + ret.output);
   candidates = JSON.parse(ret.output);
   return candidates;
@@ -26,6 +33,10 @@ exports.tag_file = function(filePath, repopath) {
   log.debug('event=run_command command=' + cmd);
 
   var ret = exec(cmd, {silent:true});
+  if (ret.code !== 0) {
+    log.debug('event=run_command_fail message=' + ret.output);
+    return emptyResult;
+  }
 
   log.debug('event=run_command_success result=' + ret.output);
 
