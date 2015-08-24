@@ -1,5 +1,5 @@
 chrome.contextMenus.create({
-  title: 'Where is it?',
+  title: 'Jump to definition',
   contexts: ['selection'],
   onclick: getClickHandler()
 });

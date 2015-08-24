@@ -21,7 +21,7 @@
       "shared.js",
       "utils/tab.js",
       "dom-loaded.js",
-      "find.js"]
+      "context-menu.js"]
   },
 
   "content_scripts":[
