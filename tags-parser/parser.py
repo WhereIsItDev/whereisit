@@ -162,7 +162,6 @@ def gen_ctags(repo_path):
         time_now = time.time()
         if time_now - mtime < (60 * 10):
             # was modified in the last 10 mins
-            print 'tag not updated'
             return tags_path
     with open('error.log', 'a') as f:
         subprocess.check_output(
