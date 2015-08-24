@@ -21,6 +21,7 @@ function findstuff(data) {
   var location = data.location;
   var cachedResults = data.cached;
   var callback = data.callback;
+  var ff = data.ff;
 
   function success(resp) {
     callback(resp);
@@ -37,6 +38,7 @@ function findstuff(data) {
   sendRequest({
     snippet: userSelection,
     url: location,
+    ff: ff
   }, success, function() {});
 }
 
@@ -83,11 +85,13 @@ function findit(data) {
           });
       })
     }
+    data.ff = true;
   } else {
     data.callback = function(resp) {
       hideInfo();
       cachedAddToDom(resp);
     }
+    data.ff = false;
   }
 
   findstuff(data)
@@ -98,7 +102,7 @@ function sendRequest(data, success, failure) {
   $.ajax({
     url: SERVER_URL,
     method: 'POST',
-    data: JSON.stringify({'snippet': data.snippet, 'url': data.url, 'ff': true}),
+    data: JSON.stringify({'snippet': data.snippet, 'url': data.url, 'ff': data.ff}),
     contentType: 'application/json; charset=utf-8'
   }).done(function(resp) {
     console.log('JSON response from server: ' + resp);
