@@ -155,15 +155,20 @@ def lookup_tagname(tagname, tags, filetype=None):
 
 
 def gen_ctags(repo_path):
+    import time
     tags_path = os.path.join(repo_path, 'tags')
     if os.path.exists(tags_path):
-        return tags_path
-    else:
-        with open('error.log', 'a') as f:
-            subprocess.check_output(
-                ['ctags', '-f', tags_path, '-R', '--excmd=number', repo_path],
-                stderr=f)
-        return tags_path
+        mtime = os.path.getmtime(tags_path)
+        time_now = time.time()
+        if time_now - mtime < (60 * 10):
+            # was modified in the last 10 mins
+            print 'tag not updated'
+            return tags_path
+    with open('error.log', 'a') as f:
+        subprocess.check_output(
+            ['ctags', '-f', tags_path, '-R', '--excmd=number', repo_path],
+            stderr=f)
+    return tags_path
 
 
 @click.command()
