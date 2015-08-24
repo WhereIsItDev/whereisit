@@ -11,14 +11,22 @@ var cache = require('./cache');
 
 var log = require('./logging');
 
-app.post('/file', function(req,res){
+function urlParam(req, res, next) {
+  url = req.body.url;
+  if (url === null) return res.sendStatus(404);
+  else next();
+}
+
+function snippetParam(req, res, next) {
+  url = req.body.url;
+  snippet = req.body.snippet;
+  if (snippet === null) return res.sendStatus(404);
+  else next();
+}
+
+app.post('/file', urlParam, function(req,res){
   log.debug('event=connected');
   url = req.body.url;
-
-  if (url === null) {
-    return res.sendStatus(404);
-  }
-
   var repoPath = getGit.cloneFromGit(url);
   if (repoPath == null) {
     return res.sendStatus(404);
@@ -39,15 +47,10 @@ app.post('/file', function(req,res){
   return res.json(results);
 });
 
-app.post('/', function(req,res){
+app.post('/', urlParam, snippetParam, function(req,res){
   log.debug('event=connected');
   url     = req.body.url;
   snippet = req.body.snippet;
-
-  if (url == null || snippet == null) {
-    return res.sendStatus(404);
-  }
-
   log.debug('event=query snippet=' + snippet + ' url=' + url);
 
   cacheValue = null;
