@@ -8,13 +8,13 @@ var hashFn = function(url, snippet) {
   return shasum.digest('hex');
 }
 
-exports.store = function(url, snippet, response) {
+exports.storeUrlSnippet = function(url, snippet, response) {
   var cacheKey = hashFn(url, snippet);
   cache[cacheKey] = response;
   return response;
 }
 
-exports.get = function(url, snippet) {
+exports.getUrlSnippet = function(url, snippet) {
   cacheKey = hashFn(url, snippet);
   inCache = cache[cacheKey];
   return inCache === undefined ? null : inCache;

@@ -24,7 +24,7 @@ app.post('/', function(req,res){
   log.debug('event=query snippet=' + snippet + ' url=' + url);
 
   if (url && snippet) {
-    cacheValue = cache.get(url, snippet);
+    cacheValue = cache.getUrlSnippet(url, snippet);
   } else {
     cacheValue = null;
   }
@@ -50,7 +50,7 @@ app.post('/', function(req,res){
   }
 
   if (url && snippet) {
-    cache.store(url, snippet, results);
+    cache.storeUrlSnippet(url, snippet, results);
   }
 
   return res.json(results);
