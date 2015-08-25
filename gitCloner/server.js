@@ -53,29 +53,21 @@ app.post('/', urlParam, snippetParam, function(req,res){
   snippet = req.body.snippet;
   log.debug('event=query snippet=' + snippet + ' url=' + url);
 
-  cacheValue = null;
-  if (url && snippet) {
-    cacheValue = cache.getUrlSnippet(url, snippet);
-  }
-
-  if (cacheValue) {
-    log.debug('event=web_server_cache');
-    return res.json(cacheValue);
-  }
-
   var repoPath = getGit.cloneFromGit(url);
   if (repoPath == null) {
     return res.sendStatus(404);
   }
 
+  var results;
   if (url && snippet) {
+    results = cache.getUrlSnippet(url, snippet);
+    if (results) {
+      log.debug('event=web_server_cache');
+    }
     results = ctags.run(snippet, repoPath);
+    cache.storeUrlSnippet(url, snippet, results);
   } else {
     return res.json();
-  }
-
-  if (url && snippet) {
-    cache.storeUrlSnippet(url, snippet, results);
   }
 
   return res.json(results);
