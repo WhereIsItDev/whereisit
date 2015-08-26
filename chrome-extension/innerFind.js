@@ -79,6 +79,7 @@ function findit(data) {
   if (typeof(userSelection) === "undefined") {
     data.callback = function(resp) {
       $("#spinner").hide();
+      setNormalState();
       getCurrentTab(function(tab) {
         chrome.tabs.sendMessage(
           tab.id, {
@@ -91,6 +92,7 @@ function findit(data) {
   } else {
     data.callback = function(resp) {
       hideInfo();
+      setNormalState();
       cachedAddToDom(resp);
     }
     data.ff = false;

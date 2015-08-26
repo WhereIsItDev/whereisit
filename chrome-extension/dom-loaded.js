@@ -8,12 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
   // the way we differentiate is that in case 1.
   // we set the search string to the url where the user right clicked.
   var search = window.location.search.substring(1);
+  setLoadingState();
   if (search) {
     // a result of a right click from user
     contextMenuAction(search)
+    setNormalState();
   } else {
     // user clicks on the action in the toolbar
     toolbarButtonAction()
+    // this is async, so we set normal state in callback
   }
 });
 
