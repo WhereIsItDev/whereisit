@@ -1,4 +1,5 @@
 require ('shelljs/global');
+var log = require('./logging');
 
 // file should be run using scripts/runserver from root dir
 var reposDir  = 'repos';
@@ -37,7 +38,9 @@ exports.cloneFromGit = function(url) {
 
     if (ls(repoPath).length==0) {
         mkdir('-p', repoPath);
-        var ret = exec('git clone --depth 1 ' + repoUrl + ' ' + repoPath);
+        var cmd = 'git clone --depth 1 ' + repoUrl + ' ' + repoPath;
+        var ret = exec(cmd, {silent: true});
+        log.debug('command ' + cmd + ' took ');
         if (ret.code=="0") {
             echo('clone successful: ' + repoPath);
             return repoPath;
@@ -46,13 +49,14 @@ exports.cloneFromGit = function(url) {
         oldDir = pwd();
         cd(repoPath);
         echo('repo already exists, updating');
-        var ret = exec('git pull -s recursive --rebase=preserve');
+        var cmd = 'git pull -s recursive --rebase=preserve';
+        var ret = exec(cmd);
+        log.debug('command ' + cmd + ' took ');
+        cd(oldDir);
 
         if (ret.code=="0") {
-            cd(oldDir);
-            return repoPath;
+          return repoPath;
         }
-        cd(oldDir);
     }
     return null;
 }
