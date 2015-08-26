@@ -142,3 +142,11 @@ var resultTemplate = '<div class="result">' +
       '<pre></pre>' +
     '</div>' +
   '</div>';
+
+chrome.runtime.onMessage.addListener(function(data) {
+  console.log('data from onMessage');
+  console.log(data);
+  if (data.type === 'FINDIT' && data.location) {
+    findit(data);
+  }
+});

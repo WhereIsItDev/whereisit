@@ -3,6 +3,7 @@
  */
 function sendMessageToCurrentTab(message, callback) {
   getCurrentTab(function(tab) {
+    if (!tab) return;
     chrome.tabs.sendMessage(tab.id, message, callback);
   })
 }

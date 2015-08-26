@@ -61,3 +61,20 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     linkUpMethods(msg_tags);
   }
 });
+
+
+window.addEventListener('message', function(event) {
+  if (event.source !== window) {
+    return;
+  }
+  if (event.data.type
+      && (event.data.type === 'FINDIT')
+      && event.data.location) {
+    chrome.runtime.sendMessage(event.data);
+  }
+})
+
+window.onload = function() {
+  var location = window.location.origin + window.location.pathname;
+  window.postMessage({type: 'FINDIT', location: location}, '*');
+}

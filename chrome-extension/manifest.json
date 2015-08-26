@@ -21,6 +21,7 @@
       "shared.js",
       "utils/tab.js",
       "dom-loaded.js",
+      "innerFind.js",
       "context-menu.js"]
   },
 
