@@ -1,4 +1,5 @@
 var log = require('./logging');
+var shell = require('shelljs');
 
 function defaultFailure() {
   return null;
@@ -8,7 +9,7 @@ function run_cmd(cmd, success, failure) {
   failure = failure || defaultFailure;
 
   var start = new Date();
-  var ret = exec(cmd, {silent:true});
+  var ret = shell.exec(cmd, {silent:true});
 
   if (ret.code !== 0) {
     var end = new Date();

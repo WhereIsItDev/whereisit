@@ -1,4 +1,4 @@
-require ('shelljs/global');
+var shell = require('shelljs');
 var log = require('./logging');
 var utils = require('./utils');
 
@@ -27,24 +27,23 @@ exports.cloneFromGit = function(url) {
     repoPath = [reposDir, user, repo].join('/');
 
     if (wasRecentlyPulled(repoUrl)) {
-      return repoPath
+      return repoPath;
     }
 
-    var dirExists = test('-e', repoPath);
+    var dirExists = shell.test('-e', repoPath);
     var result;
 
     if (dirExists) {
         log.debug('event=git_directory_exists')
-        oldDir = pwd();
-        cd(repoPath);
+        oldDir = shell.pwd();
+        shell.cd(repoPath);
         var cmd = 'git pull -s recursive --rebase=preserve';
         result = utils.run_cmd(cmd, function() { return repoPath;})
-        cd(oldDir);
+        shell.cd(oldDir);
     } else {
         log.debug('event=git_need_to_clone')
-        mkdir('-p', repoPath);
+        shell.mkdir('-p', repoPath);
         var cmd = 'git clone --depth 1 ' + repoUrl + ' ' + repoPath;
-        var ret = exec(cmd, {silent: true});
         result = utils.run_cmd(cmd, function() { return repoPath;})
     }
     return result;
