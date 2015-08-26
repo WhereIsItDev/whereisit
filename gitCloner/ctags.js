@@ -1,23 +1,14 @@
 require ('shelljs/global');
 
-var log = require('./logging');
+var utils = require('./utils');
 var emptyResult = [];
 
-function run_cmd(cmd, failResult) {
-  var start = new Date();
-  var ret = exec(cmd, {silent:true});
+function failure() {
+  return [];
+}
 
-  if (ret.code !== 0) {
-    var end = new Date();
-    log.debug('event=run_command_fail message=' + ret.output);
-    log.debug('command ' + cmd + ' took ' + ((end - start) / 1000) + 's')
-    return failResult;
-  }
-
-  var end = new Date();
-  log.debug('event=run_command_success result=' + ret.output);
-  log.debug('command ' + cmd + ' took ' + ((end - start) / 1000) + 's')
-  return JSON.parse(ret.output);
+function success(commandOutput) {
+  return JSON.parse(commandOutput);
 }
 
 exports.run = function(tagname, repopath) {
@@ -29,7 +20,7 @@ exports.run = function(tagname, repopath) {
   tagname = tagname.replace(/\n.*/, '');
 
   cmd = [script, tagname, repopath].join(' ');
-  return run_cmd(cmd, []);
+  return utils.run_cmd(cmd, failure, success)
 }
 
 exports.tag_file = function(filePath, repopath) {
@@ -37,5 +28,5 @@ exports.tag_file = function(filePath, repopath) {
   var codePath = [repopath, filePath].join('/');
   var cmd = [script, codePath, repopath].join(' ');
 
-  return run_cmd(cmd, []);
+  return utils.run_cmd(cmd, failure, success)
 }
