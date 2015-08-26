@@ -1,5 +1,3 @@
-require ('shelljs/global');
-
 var utils = require('./utils');
 var emptyResult = [];
 
