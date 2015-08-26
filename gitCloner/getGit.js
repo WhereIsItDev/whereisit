@@ -46,7 +46,7 @@ exports.cloneFromGit = function(url) {
         oldDir = pwd();
         cd(repoPath);
         echo('repo already exists, updating');
-        var ret = exec('git pull');
+        var ret = exec('git pull --depth=1');
         if (ret.code=="0") {
             cd(oldDir);
             return repoPath;
