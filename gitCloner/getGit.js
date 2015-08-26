@@ -1,24 +1,16 @@
 require ('shelljs/global');
 var log = require('./logging');
+var utils = require('./utils');
 
 // file should be run using scripts/runserver from root dir
 var reposDir  = 'repos';
 var lastCheck = {};
 
 exports.cloneFromGit = function(url) {
-    var user        = '';
-    var repoUrl     = '';
-    var repo        = '';
     var piecesOfUrl = url.split('/');
-
-    piecesOfUrl[0] = "git:";
-    for (i=0; i < 5; i++){
-        repoUrl += piecesOfUrl[i]+'/';
-        if (i == 4)
-            repo = piecesOfUrl[i];
-        if (i == 3)
-            user = piecesOfUrl[i];
-    }
+    var user = piecesOfUrl[3];
+    var repo = piecesOfUrl[4];
+    var repoUrl = 'git:/' + piecesOfUrl.splice(1, 4).join('/');
 
     repoPath = [reposDir, user, repo].join('/');
 
@@ -36,29 +28,22 @@ exports.cloneFromGit = function(url) {
     }
 
 
-    if (ls(repoPath).length==0) {
+    var dirExists = ls(repoPath).length === 0;
+    var result;
+
+    if (dirExists) {
         mkdir('-p', repoPath);
         var cmd = 'git clone --depth 1 ' + repoUrl + ' ' + repoPath;
         var ret = exec(cmd, {silent: true});
-        log.debug('command ' + cmd + ' took ');
-        if (ret.code=="0") {
-            echo('clone successful: ' + repoPath);
-            return repoPath;
-        }
+        result = utils.run_cmd(cmd, function() { return repoPath;})
     } else {
         oldDir = pwd();
         cd(repoPath);
-        echo('repo already exists, updating');
         var cmd = 'git pull -s recursive --rebase=preserve';
-        var ret = exec(cmd);
-        log.debug('command ' + cmd + ' took ');
+        result = utils.run_cmd(cmd, function() { return repoPath;})
         cd(oldDir);
-
-        if (ret.code=="0") {
-          return repoPath;
-        }
     }
-    return null;
+    return result;
 }
 
 
