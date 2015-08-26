@@ -1,2 +1,2 @@
 export NODE_ENV=dev
-PATH=$PATH:./gitCloner/node_modules/.bin/ nodemon gitCloner/server.js
+PATH=$PATH:./gitCloner/node_modules/.bin/ nodemon -w ./gitCloner gitCloner/server.js
