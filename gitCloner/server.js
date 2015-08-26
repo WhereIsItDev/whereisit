@@ -33,17 +33,18 @@ app.post('/file', urlParam, function(req,res){
   }
 
   var p = url.split('/');
+  // this will fail if we have a branch like "stable/1.8"
   filePath = p.slice(7).join('/');
 
-  var cacheValue = cache.getFileTags(filePath, repoPath);
-  if (cacheValue) {
+  var results = cache.getFileTags(filePath, repoPath);
+  if (results) {
     log.debug('event=web_server_cache');
-    return res.json(cacheValue);
+  } else {
+    results = ctags.tag_file(filePath, repoPath);
+    cache.storeFileTags(filePath, repoPath, results);
   }
 
-  results = ctags.tag_file(filePath, repoPath);
-  cache.storeFileTags(filePath, repoPath, results);
-
+  log.debug('server_response=' + results);
   return res.json(results);
 });
 
