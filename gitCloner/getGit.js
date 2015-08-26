@@ -30,22 +30,22 @@ exports.cloneFromGit = function(url) {
       return repoPath
     }
 
-    var dirExists = ls(repoPath).length === 0;
+    var dirExists = test('-e', repoPath);
     var result;
 
     if (dirExists) {
         log.debug('event=git_directory_exists')
-        mkdir('-p', repoPath);
-        var cmd = 'git clone --depth 1 ' + repoUrl + ' ' + repoPath;
-        var ret = exec(cmd, {silent: true});
-        result = utils.run_cmd(cmd, function() { return repoPath;})
-    } else {
-        log.debug('event=git_need_to_clone')
         oldDir = pwd();
         cd(repoPath);
         var cmd = 'git pull -s recursive --rebase=preserve';
         result = utils.run_cmd(cmd, function() { return repoPath;})
         cd(oldDir);
+    } else {
+        log.debug('event=git_need_to_clone')
+        mkdir('-p', repoPath);
+        var cmd = 'git clone --depth 1 ' + repoUrl + ' ' + repoPath;
+        var ret = exec(cmd, {silent: true});
+        result = utils.run_cmd(cmd, function() { return repoPath;})
     }
     return result;
 }
