@@ -20,7 +20,7 @@ exports.run = function(tagname, repopath) {
   tagname = tagname.replace(/\n.*/, '');
 
   cmd = [script, tagname, repopath].join(' ');
-  return utils.run_cmd(cmd, failure, success)
+  return utils.run_cmd(cmd, success, failure)
 }
 
 exports.tag_file = function(filePath, repopath) {
@@ -28,5 +28,5 @@ exports.tag_file = function(filePath, repopath) {
   var codePath = [repopath, filePath].join('/');
   var cmd = [script, codePath, repopath].join(' ');
 
-  return utils.run_cmd(cmd, failure, success)
+  return utils.run_cmd(cmd, success, failure)
 }
