@@ -6,37 +6,41 @@ var utils = require('./utils');
 var reposDir  = 'repos';
 var lastCheck = {};
 
+function wasRecentlyPulled(repoUrl) {
+  var timeNow = Date.now() / 1000 | 0;
+  if (lastCheck.hasOwnProperty(repoUrl)) {
+    if ((timeNow - lastCheck[repoUrl]) < 30) {
+      log.debug('event=git_cached');
+      return true;
+    }
+  }
+  lastCheck[repoUrl] = timeNow;
+  return false;
+}
+
 exports.cloneFromGit = function(url) {
-    var piecesOfUrl = url.split('/');
-    var user = piecesOfUrl[3];
-    var repo = piecesOfUrl[4];
-    var repoUrl = 'git:/' + piecesOfUrl.splice(1, 4).join('/');
+    var splits = url.split('/');
+    var user = splits[3];
+    var repo = splits[4];
+    var repoUrl = 'git:/' + splits.splice(1, 4).join('/');
 
     repoPath = [reposDir, user, repo].join('/');
 
-    var timeNow = Date.now() / 1000 | 0;
-
-    if(lastCheck.hasOwnProperty(repoUrl)){
-        if((timeNow - lastCheck[repoUrl])<30){
-            echo("I didn't pulled because I just did it!!!!");
-            return repoPath;
-        }else{
-            lastCheck[repoUrl] = timeNow;
-        }
-    }else{
-        lastCheck[repoUrl] = timeNow;
+    if (wasRecentlyPulled(repoUrl)) {
+      return repoPath
     }
-
 
     var dirExists = ls(repoPath).length === 0;
     var result;
 
     if (dirExists) {
+        log.debug('event=git_directory_exists')
         mkdir('-p', repoPath);
         var cmd = 'git clone --depth 1 ' + repoUrl + ' ' + repoPath;
         var ret = exec(cmd, {silent: true});
         result = utils.run_cmd(cmd, function() { return repoPath;})
     } else {
+        log.debug('event=git_need_to_clone')
         oldDir = pwd();
         cd(repoPath);
         var cmd = 'git pull -s recursive --rebase=preserve';
