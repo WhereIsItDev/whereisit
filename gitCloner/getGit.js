@@ -37,6 +37,11 @@ exports.cloneFromGit = function(url) {
         log.debug('event=git_directory_exists')
         oldDir = shell.pwd();
         shell.cd(repoPath);
+
+        // in case of previously failed pull, reset it
+        var cmd = 'git reset --hard';
+        utils.run_cmd(cmd, function() { return; })
+
         var cmd = 'git pull -s recursive --rebase=preserve';
         result = utils.run_cmd(cmd, function() { return repoPath;})
         shell.cd(oldDir);
