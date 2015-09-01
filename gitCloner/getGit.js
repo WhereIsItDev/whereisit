@@ -26,6 +26,7 @@ exports.cloneFromGit = function(url) {
 
     repoPath = [reposDir, user, repo].join('/');
 
+    return repoPath;
     if (wasRecentlyPulled(repoUrl)) {
       return repoPath;
     }

@@ -53,20 +53,6 @@ function findit(data) {
   var userSelection = data.text;
   var location = data.location;
 
-  function cachedAddToDom(resp) {
-    // background page is reloaded everytime it's clicked
-    // so we sent a mesage to the current tab to use its cache
-    getCurrentTab(function(tab) {
-      chrome.tabs.sendMessage(
-        tab.id, {
-          text: "cachethis",
-          cacheKey: userSelection,
-          cacheValue: resp
-        });
-      addToDom(resp);
-    })
-  }
-
   function addToDom(resp) {
     $status = $('#status');
     $status.find('#search').text(userSelection);
@@ -94,7 +80,7 @@ function findit(data) {
     data.callback = function(resp) {
       hideInfo();
       setNormalState();
-      cachedAddToDom(resp);
+      addToDom(resp);
     }
     data.ff = false;
   }
@@ -149,7 +135,9 @@ var resultTemplate = '<div class="result">' +
 chrome.runtime.onMessage.addListener(function(data) {
   console.log('data from onMessage');
   console.log(data);
+  setLoadingState()
   if (data.type === 'FINDIT' && data.location) {
     findit(data);
   }
+  setNormalState();
 });
