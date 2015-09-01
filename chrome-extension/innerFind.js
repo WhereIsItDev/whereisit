@@ -49,6 +49,7 @@ function findstuff(data) {
  * and populate the background html
  */
 function findit(data) {
+  setLoadingState();
   var userSelection = data.text;
   var location = data.location;
 
