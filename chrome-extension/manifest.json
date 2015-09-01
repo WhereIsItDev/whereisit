@@ -29,15 +29,10 @@
   "content_scripts":[
     {
       "matches":["*://github.com/*"],
-      "js":[
+      "js": [
         "shared.js",
-        "traversal.js",
-        "link-builder.js",
-        "language.js",
-        "file-extension.js",
-        "injected.js",
-        "innerFind.js",
-        "jquery-2.1.4.js"],
+        "injected.js"
+      ],
         "run_at": "document_end"
     }
   ],
