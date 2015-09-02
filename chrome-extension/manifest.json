@@ -10,7 +10,7 @@
     "16": "img/logo16.png"
   },
 
-  "browser_action": {
+  "page_action": {
     "default_icon": "img/logo19.png",
     "default_popup": "find.html"
   },

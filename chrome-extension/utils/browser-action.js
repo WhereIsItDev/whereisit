@@ -1,14 +1,16 @@
 
-function setLoadingState() {
-  chrome.browserAction.setIcon({
-    path: 'img/logo19-loading.png'
+function setLoadingState(tabId) {
+  chrome.pageAction.setIcon({
+    tabId: tabId,
+    path: 'img/logo19-loading.png',
   })
-  chrome.browserAction.setBadgeText({text:"?"});
+  chrome.pageAction.show(tabId)
 }
 
-function setNormalState() {
-  chrome.browserAction.setIcon({
-    path: 'img/logo19.png'
+function setNormalState(tabId) {
+  chrome.pageAction.setIcon({
+    tabId: tabId,
+    path: 'img/logo19.png',
   })
-  chrome.browserAction.setBadgeText({text:""});
+  chrome.pageAction.show(tabId)
 }

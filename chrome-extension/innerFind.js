@@ -49,7 +49,6 @@ function findstuff(data) {
  * and populate the background html
  */
 function findit(data) {
-  setLoadingState();
   var userSelection = data.text;
   var location = data.location;
 
@@ -66,20 +65,13 @@ function findit(data) {
   if (typeof(userSelection) === "undefined") {
     data.callback = function(resp) {
       $("#spinner").hide();
-      setNormalState();
-      getCurrentTab(function(tab) {
-        chrome.tabs.sendMessage(
-          tab.id, {
-            text: "addlinks",
-            tags: resp,
-          });
-      })
+      chrome.tabs.sendMessage(
+        data.tabId, {text: 'addlinks', tags: resp})
     }
     data.ff = true;
   } else {
     data.callback = function(resp) {
       hideInfo();
-      setNormalState();
       addToDom(resp);
     }
     data.ff = false;
@@ -96,10 +88,8 @@ function sendRequest(data, success, failure) {
     data: JSON.stringify({'snippet': data.snippet, 'url': data.location}),
     contentType: 'application/json; charset=utf-8'
   }).done(function(resp) {
-    console.log('JSON response from server: ' + resp);
     success(resp);
   }).fail(function(resp) {
-    console.log('fail ' + resp);
     failure(resp);
   })
 }
@@ -132,12 +122,14 @@ var resultTemplate = '<div class="result">' +
     '</div>' +
   '</div>';
 
-chrome.runtime.onMessage.addListener(function(data) {
-  console.log('data from onMessage');
-  console.log(data);
-  setLoadingState()
-  if (data.type === 'FINDIT' && data.location) {
-    findit(data);
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  console.log('message from onMessage');
+  console.log(message);
+  var tabId = sender.tab.id;
+  setLoadingState(tabId);
+  if (message.type === 'FINDIT' && message.location) {
+    message.tabId = tabId;
+    findit(message);
   }
-  setNormalState();
+  setNormalState(tabId);
 });
