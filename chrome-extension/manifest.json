@@ -19,9 +19,7 @@
     "scripts": [
       "jquery-2.1.4.js",
       "shared.js",
-      "utils/tab.js",
       "utils/browser-action.js",
-      // "dom-loaded.js",
       "background.js",
       "context-menu.js"]
   },

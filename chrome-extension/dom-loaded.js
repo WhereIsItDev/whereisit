@@ -75,7 +75,6 @@ function hideInfo() {
  * 3. updates the background page of the toolbar button
  */
 function toolbarButtonAction() {
-  // sendMessageToCurrentTab({text: 'whereisit'}, findit);
   var callback = function(message) {
     chrome.runtime.sendMessage({
       type: 'PAGE_ACTION',
