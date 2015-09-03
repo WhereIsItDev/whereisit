@@ -147,6 +147,7 @@ function linkUpMethods(msg_tags) {
     var url = makeLink(tag.filepath, window.location.href, tag.linenum);
     var span = breakTextAt(
       textNode, new RegExp("\\b" + tag.tagname + '\\b', "g"));
+    if (!span) return; // TODO(ngzhian) method call in method call on same line
     var a = makeAhref(url, span.firstChild.data);
     span.replaceChild(a, span.firstChild);
   }
@@ -172,7 +173,6 @@ function linkUpMethods(msg_tags) {
     matches = lang.matchMethodCalls(textNode.data);
     matches.forEach(function(match) { linkTextNodeToName(textNode, match); })
   }
-
 
   var codeContainer = document.getElementsByClassName('blob-wrapper')[0];
 
@@ -204,13 +204,14 @@ function hasCodeBlock(document) {
 }
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+  // called by the page action to get user selection and location
   if (msg.type == 'SELECTION_AND_LOCATION') {
     if (!isGitHubUrl(window.location.origin)) return;
     if (!hasCodeBlock(document)) return;
 
     var text = getSelectedText();
-    var location = msg.location || (window.location.origin + window.location.pathname);
-    if (!text) return;
+    var location = window.location.origin + window.location.pathname;
+    if (!text || !location) return;
 
     sendResponse({text:text, location: location});
   }

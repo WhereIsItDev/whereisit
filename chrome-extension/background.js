@@ -56,13 +56,11 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 });
 
 function pageAction(message, callback) {
-  message.ff = false;
   message.callback = callback;
   findstuff(message)
 }
 
 function contextMenu(message, callback) {
-  message.ff = false;
   message.callback = callback;
   findstuff(message)
 }
