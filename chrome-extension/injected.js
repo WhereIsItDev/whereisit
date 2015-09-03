@@ -239,7 +239,6 @@ window.onload = function() {
 
 function insertLinks(response) {
   if (!response) console.log(chrome.runtime.lastError);
-  return;
   tags = {}
   response.forEach(function(v) { tags[v.tagname] = v; })
   linkUpMethods(tags);

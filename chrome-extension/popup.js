@@ -48,7 +48,6 @@ function contextMenuAction(search) {
  * 3. updates the background page of the toolbar button
  */
 function toolbarButtonAction() {
-  $("#spinner").show();
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var tab = tabs[0];
     // send message to get user selection
@@ -63,6 +62,9 @@ function triggerPageAction(message) {
   var userSelection = message.text;
   var location = message.location;
 
+  if (!userSelection || ! location) return;
+
+  $("#spinner").show();
   chrome.runtime.sendMessage({
     type: 'PAGE_ACTION',
     text: userSelection,
