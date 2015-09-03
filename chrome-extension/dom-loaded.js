@@ -40,6 +40,32 @@ function contextMenuAction(search) {
   });
 }
 
+function makeResultHtml(v, location) {
+  var $template = $(resultTemplate);
+  var link = makeLink(v.filepath, location, v.linenum);
+  $template.find('.link')
+    .attr('href', link)
+    .text(v.filepath + '(line ' + v.linenum + ')');
+  $template.find('.snippet pre')
+    .text(v.exerpt);
+  return $template;
+}
+
+var resultTemplate = '<div class="result">' +
+    '<div class="path">' +
+      '<a class="link" target="_blank"></a>' +
+    '</div>' +
+    '<div class="snippet">' +
+      '<pre></pre>' +
+    '</div>' +
+  '</div>';
+
+function hideInfo() {
+  $("#title").hide();
+  $("#selSom").hide();
+  $("#spinner").hide();
+}
+
 /**
  * Called when the user clicks on the toolbar button.
  * This sends a message to the current tab to
@@ -49,7 +75,44 @@ function contextMenuAction(search) {
  * 3. updates the background page of the toolbar button
  */
 function toolbarButtonAction() {
-  sendMessageToCurrentTab({text: 'whereisit'}, findit);
+  // sendMessageToCurrentTab({text: 'whereisit'}, findit);
+  var callback = function(message) {
+    chrome.runtime.sendMessage({
+      type: 'PAGE_ACTION',
+      text: message.text,
+      location: message.location
+    }, function(results) {
+      console.log(results);
+
+      var userSelection = message.text;
+      var location = message.location;
+
+      function addToDom(resp) {
+        $status = $('#status');
+        $status.find('#search').text(userSelection);
+        html = resp.forEach(function(v) {
+          $status.append(makeResultHtml(v, location));
+        });
+        $("#title").show();
+      }
+
+      hideInfo();
+      addToDom(results);
+    });
+
+  }
+  var message = {text: 'whereisit'};
+  var queryInfo = {
+    active: true,
+    currentWindow: true
+  };
+  $("#spinner").show();
+
+  chrome.tabs.query(queryInfo, function(tabs) {
+    var tab = tabs[0];
+    // send message to get user selection
+    chrome.tabs.sendMessage(tab.id, message, callback);
+  });
 }
 
 /**

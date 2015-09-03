@@ -198,62 +198,32 @@ function isGitHubUrl(url) {
   return url.search(ORIGIN_RE) !== -1;
 }
 
-cache = {}
+function hasCodeBlock(document) {
+  var codeBlocks = document.getElementsByClassName('blob-wrapper');
+  return codeBlocks.length > 0;
+}
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-  if (msg.text && (msg.text == "whereisit")) {
-    if (!isGitHubUrl(window.location.origin)) {
-      console.log('Not a GitHub page.');
-      return;
-    }
+  if (msg.text == "whereisit") {
+    if (!isGitHubUrl(window.location.origin)) return;
+    if (!hasCodeBlock(document)) return;
 
-    var codeBlocks = document.getElementsByClassName('blob-wrapper');
-    if (codeBlocks.length <= 0) {
-      console.log('Page does not contain code');
-      return;
-    }
-
-    var hasCode = codeBlocks.length > 0;
-    var text = msg.selection || getSelectedText();
+    var text = getSelectedText();
     var location = msg.location || (window.location.origin + window.location.pathname);
-    if (text) {
-      console.log('User selection is: ' + text);
-      console.log(location);
+    if (!text) return;
 
-      var inCache = cache[text];
-      if (inCache !== undefined) {
-        console.log('sending cached value for selection: ' + inCache);
-        sendResponse({text:text, location: location, cached: inCache});
-      } else {
-        sendResponse({text:text, location: location});
-      }
-    } else {
-        sendResponse({location: location});
-    }
+    sendResponse({text:text, location: location});
   }
 
-  if (msg.text && (msg.text == "cachethis")) {
-    console.log('received msg to cache: ' + msg.cacheKey);
-    cache[msg.cacheKey] = msg.cacheValue;
-  }
-
-  if (msg.text && (msg.text == "addlinks")) {
-    console.log('received msg to addLinks');
-    msg_tags = {}
-    msg.tags.forEach(function(v) {
-      msg_tags[v.tagname] = v;
-    })
-    linkUpMethods(msg_tags);
-  }
+  // important to return true to keep the async communications open
+  return true;
 });
 
 window.onload = function() {
   // this script will be injected on all github pages (based on manifest)
   // do a check that this page contains code blocks
-  var codeBlocks = document.getElementsByClassName('blob-wrapper');
-  if (codeBlocks.length <= 0) {
-    return;
-  }
+  if (!isGitHubUrl(window.location.origin)) return;
+  if (!hasCodeBlock(document)) return;
 
   // Sends a message to the background script:
   // {
@@ -269,6 +239,7 @@ window.onload = function() {
 
 function insertLinks(response) {
   if (!response) console.log(chrome.runtime.lastError);
+  return;
   tags = {}
   response.forEach(function(v) { tags[v.tagname] = v; })
   linkUpMethods(tags);

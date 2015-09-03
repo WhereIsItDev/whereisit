@@ -1,35 +1,11 @@
 PROD = "http://45.33.82.241:8880";
 DEV = "http://localhost:8080";
-SERVER_URL = PROD;
-
-function hideInfo() {
-  $("#title").hide();
-  $("#selSom").hide();
-  $("#spinner").hide();
-}
-
-function loading() {
-  $("#spinner").show();
-}
-
-function failMessage() {
-  $('#fail-msg').show();
-}
+SERVER_URL = DEV;
 
 function findstuff(data) {
   var userSelection = data.text;
   var location = data.location;
-  var cachedResults = data.cached;
-  var callback = data.callback;
-  var success = callback;
-
-  loading();
-
-  if (cachedResults !== undefined) {
-    console.log('using cached results:' + cachedResults);
-    success(cachedResults);
-    return;
-  }
+  var success = data.callback;
 
   var url = SERVER_URL + (data.ff ? '/file' : '');
   console.log(url);
@@ -39,42 +15,6 @@ function findstuff(data) {
     snippet: userSelection,
     location: location,
   }, success, function() {});
-}
-
-/**
- * Given a user selection, make the API call to server
- * and populate the background html
- */
-function findit(data) {
-  var userSelection = data.text;
-  var location = data.location;
-
-  function addToDom(resp) {
-    $status = $('#status');
-    $status.find('#search').text(userSelection);
-    var status = document.getElementById('status');
-    html = resp.forEach(function(v) {
-      $status.append(makeResultHtml(v, location));
-    });
-    $("#title").show();
-  }
-
-  if (typeof(userSelection) === "undefined") {
-    data.callback = function(resp) {
-      $("#spinner").hide();
-      chrome.tabs.sendMessage(
-        data.tabId, {text: 'addlinks', tags: resp})
-    }
-    data.ff = true;
-  } else {
-    data.callback = function(resp) {
-      hideInfo();
-      addToDom(resp);
-    }
-    data.ff = false;
-  }
-
-  findstuff(data)
 }
 
 /* Make the ajax call to server */
@@ -91,38 +31,21 @@ function sendRequest(data, success, failure) {
   })
 }
 
-function makeResultHtml(v, location) {
-  var $template = $(resultTemplate);
-  var link = makeLink(v.filepath, location, v.linenum);
-  $template.find('.link')
-    .attr('href', link)
-    .text(v.filepath + '(line ' + v.linenum + ')');
-  $template.find('.snippet pre')
-    .text(v.exerpt);
-  return $template;
-}
-
-var resultTemplate = '<div class="result">' +
-    '<div class="path">' +
-      '<a class="link" target="_blank"></a>' +
-    '</div>' +
-    '<div class="snippet">' +
-      '<pre></pre>' +
-    '</div>' +
-  '</div>';
-
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  var tabId = sender.tab.id;
-  setLoadingState(tabId);
-
-  // called from page load (injected script)
-  if (message.type === 'FINDIT' && message.location && tabId) {
+  if (message.type === 'FINDIT' && message.location) {
+    // called from page load (injected script)
+    var tabId = sender.tab.id;
+    setLoadingState(tabId);
     message.tabId = tabId;
     pageFindIt(message, sendResponse);
+    setNormalState(tabId);
   } else if (message.type === 'CONTEXT_MENU') {
+    // called from user right click on context menu
     contextMenu(message, sendResponse);
+  } else if (message.type === 'PAGE_ACTION') {
+    // called from user click on page action
+    pageAction(message, sendResponse);
   }
-  setNormalState(tabId);
 
   // This function becomes invalid when the event listener returns,
   // unless you return true from the event listener to indicate you
@@ -131,6 +54,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   // https://developer.chrome.com/extensions/runtime#event-onMessage
   return true;
 });
+
+function pageAction(message, callback) {
+  message.ff = false;
+  message.callback = callback;
+  findstuff(message)
+}
 
 function contextMenu(message, callback) {
   message.ff = false;
