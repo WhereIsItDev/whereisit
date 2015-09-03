@@ -204,7 +204,7 @@ function hasCodeBlock(document) {
 }
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-  if (msg.text == "whereisit") {
+  if (msg.type == 'SELECTION_AND_LOCATION') {
     if (!isGitHubUrl(window.location.origin)) return;
     if (!hasCodeBlock(document)) return;
 
