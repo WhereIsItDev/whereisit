@@ -22,7 +22,7 @@
       "utils/tab.js",
       "utils/browser-action.js",
       // "dom-loaded.js",
-      "innerFind.js",
+      "background.js",
       "context-menu.js"]
   },
 
