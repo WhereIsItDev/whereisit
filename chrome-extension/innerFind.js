@@ -21,10 +21,7 @@ function findstuff(data) {
   var location = data.location;
   var cachedResults = data.cached;
   var callback = data.callback;
-
-  function success(resp) {
-    callback(resp);
-  }
+  var success = callback;
 
   loading();
 
@@ -123,13 +120,25 @@ var resultTemplate = '<div class="result">' +
   '</div>';
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  console.log('message from onMessage');
-  console.log(message);
   var tabId = sender.tab.id;
   setLoadingState(tabId);
   if (message.type === 'FINDIT' && message.location) {
     message.tabId = tabId;
-    findit(message);
+    pageFindIt(message, sendResponse)
   }
   setNormalState(tabId);
+
+  // This function becomes invalid when the event listener returns,
+  // unless you return true from the event listener to indicate you
+  // wish to send a response asynchronously (this will keep the
+  // message channel open to the other end until sendResponse is called).
+  // https://developer.chrome.com/extensions/runtime#event-onMessage
+  return true;
 });
+
+function pageFindIt(message, callback) {
+  var location = message.location;
+  message.ff = true;
+  message.callback = callback;
+  findstuff(message);
+}

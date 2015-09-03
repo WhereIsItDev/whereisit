@@ -248,9 +248,28 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 });
 
 window.onload = function() {
+  // this script will be injected on all github pages (based on manifest)
+  // do a check that this page contains code blocks
+  var codeBlocks = document.getElementsByClassName('blob-wrapper');
+  if (codeBlocks.length <= 0) {
+    return;
+  }
+
+  // Sends a message to the background script:
+  // {
+  //   'type': 'FINDIT',
+  //   'location': current url
+  // }
   var location = window.location.origin + window.location.pathname;
   chrome.runtime.sendMessage({
     type: 'FINDIT',
     location: location
-  });
+  }, insertLinks);
+}
+
+function insertLinks(response) {
+  if (!response) console.log(chrome.runtime.lastError);
+  tags = {}
+  response.forEach(function(v) { tags[v.tagname] = v; })
+  linkUpMethods(tags);
 }
