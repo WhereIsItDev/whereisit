@@ -44,7 +44,7 @@ app.post('/file', urlParam, function(req,res){
     cache.storeFileTags(filePath, repoPath, results);
   }
 
-  log.debug('server_response=' + results);
+  log.debug('server responsed with ' + results.length + ' results.');
   return res.json(results);
 });
 
