@@ -1,6 +1,6 @@
 PROD = "http://45.33.82.241:8880";
 DEV = "http://localhost:8080";
-SERVER_URL = DEV;
+SERVER_URL = PROD;
 
 function findstuff(data) {
   var userSelection = data.text;
