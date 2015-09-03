@@ -6,7 +6,7 @@ chrome.contextMenus.create({
 
 function getClickHandler() {
   return function(info ,tab) {
-    var url = chrome.extension.getURL('find.html');
+    var url = chrome.extension.getURL('popup.html');
     url += '?selection=' + info.selectionText + '&location=' + info.pageUrl;
     chrome.tabs.create({url: url});
   }
