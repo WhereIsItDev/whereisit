@@ -70,6 +70,7 @@ class Tag(object):
         """
         path = self.tagfile
         exerpt = []
+        line = ''
         with open(path, 'r') as f:
             for i in range(self.linenum):
                 line = f.readline()
