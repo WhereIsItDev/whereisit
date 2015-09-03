@@ -1,24 +1,22 @@
 /**
  * Triggered when user clicks on the action button
  */
-// document.addEventListener('DOMContentLoaded', function() {
-//   // the background page can be loaded in 2 ways,
-//   // 1. when the user right clicks on a selection,
-//   // 2. when the user clicks on the toolbar button
-//   // the way we differentiate is that in case 1.
-//   // we set the search string to the url where the user right clicked.
-//   var search = window.location.search.substring(1);
-//   setLoadingState();
-//   if (search) {
-//     // a result of a right click from user
-//     contextMenuAction(search)
-//     setNormalState();
-//   } else {
-//     // user clicks on the action in the toolbar
-//     toolbarButtonAction()
-//     // this is async, so we set normal state in callback
-//   }
-// });
+document.addEventListener('DOMContentLoaded', function() {
+  // the background page can be loaded in 2 ways,
+  // 1. when the user right clicks on a selection,
+  // 2. when the user clicks on the toolbar button
+  // the way we differentiate is that in case 1.
+  // we set the search string to the url where the user right clicked.
+  var search = window.location.search.substring(1);
+  if (search) {
+    // a result of a right click from user
+    contextMenuAction(search)
+  } else {
+    // user clicks on the action in the toolbar
+    toolbarButtonAction()
+    // this is async, so we set normal state in callback
+  }
+});
 
 /**
  * Called when the user right clicks a selection on the page
@@ -30,16 +28,15 @@ function contextMenuAction(search) {
   var splits = search.split('&', 2);
   var selection = splits[0].substring('selection'.length + 1);
   var location = splits[1].substring('location'.length + 1);
-  // might want to refactor this to use the same message sending mechanism
-  // sendMessageToCurrentTab({
-    // text: 'whereisit',
-    // selection: selection,
-    // location: location
-  // }, findit);
-  findstuff({
-    'text': selection,
-    'location': location,
-    'callback': redirectToFirstResult(location)
+
+  chrome.runtime.sendMessage({
+    type: 'CONTEXT_MENU',
+    text: selection,
+    location: location
+  }, function(results) {
+    var result = results[0];
+    var url = makeLink(result.filepath, location, result.linenum);
+    window.location.href = url;
   });
 }
 

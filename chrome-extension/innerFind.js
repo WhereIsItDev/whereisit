@@ -91,14 +91,6 @@ function sendRequest(data, success, failure) {
   })
 }
 
-function redirectToFirstResult(location) {
-  return function(results) {
-    var result = results[0];
-    var url = makeLink(result.filepath, location, result.linenum);
-    window.location.href = url;
-  }
-}
-
 function makeResultHtml(v, location) {
   var $template = $(resultTemplate);
   var link = makeLink(v.filepath, location, v.linenum);
@@ -122,9 +114,13 @@ var resultTemplate = '<div class="result">' +
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   var tabId = sender.tab.id;
   setLoadingState(tabId);
-  if (message.type === 'FINDIT' && message.location) {
+
+  // called from page load (injected script)
+  if (message.type === 'FINDIT' && message.location && tabId) {
     message.tabId = tabId;
-    pageFindIt(message, sendResponse)
+    pageFindIt(message, sendResponse);
+  } else if (message.type === 'CONTEXT_MENU') {
+    contextMenu(message, sendResponse);
   }
   setNormalState(tabId);
 
@@ -136,8 +132,13 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   return true;
 });
 
+function contextMenu(message, callback) {
+  message.ff = false;
+  message.callback = callback;
+  findstuff(message)
+}
+
 function pageFindIt(message, callback) {
-  var location = message.location;
   message.ff = true;
   message.callback = callback;
   findstuff(message);
