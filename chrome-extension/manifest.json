@@ -37,8 +37,6 @@
   "homepage_url": "http://whereisit.io",
   "permissions": [
     "contextMenus",
-    "activeTab",
-    "tabs",
     "*://github.com/*",
     "https://ajax.googleapis.com/",
     "http://localhost/",
