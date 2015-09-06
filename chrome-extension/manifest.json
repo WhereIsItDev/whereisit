@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Where is it?",
-  "version": "0.2.1",
+  "version": "0.2.2",
 
   "description": "Whereisit is an extension that helps you to easily find the references on repositories in an online fashion.",
   "icons":{
@@ -37,6 +37,7 @@
   "homepage_url": "http://whereisit.io",
   "permissions": [
     "contextMenus",
+    "activeTab",
     "*://github.com/*",
     "https://ajax.googleapis.com/",
     "http://localhost/",
