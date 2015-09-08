@@ -52,10 +52,11 @@ function Python() {
 }
 
 function JavaScript() {
+  var methodCallRegex = /\.?\w+\(/g;
   var methodReplaceRegex = /[.(]/g;
 
   function matchMethodCalls(str) {
-    return [str];
+    return str.match(methodCallRegex) || [str];
   }
 
   function stripMethodCall(str) {
@@ -63,8 +64,9 @@ function JavaScript() {
   }
 
   function isMethod(node) {
+    match = node.data.match(/\.?\w+\(/);
     hasClass = node.parentElement.classList.contains('pl-c1');
-    return hasClass;
+    return hasClass || match;
   }
 
   return {
