@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Where is it?",
-  "version": "0.2.2",
+  "version": "0.2.3",
 
   "description": "Whereisit is an extension that helps you to easily find the references on repositories in an online fashion.",
   "icons":{
@@ -28,6 +28,7 @@
     {
       "matches":["*://github.com/*"],
       "js": [
+        "jquery-2.1.4.min.js",
         "shared.js",
         "injected.js"
       ],

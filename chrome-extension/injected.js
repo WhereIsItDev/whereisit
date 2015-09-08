@@ -222,7 +222,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
   return true;
 });
 
-window.onload = function() {
+function checkAndTriggerLinkInsertion() {
   // this script will be injected on all github pages (based on manifest)
   // do a check that this page contains code blocks
   if (!isGitHubUrl(window.location.origin)) return;
@@ -239,6 +239,31 @@ window.onload = function() {
     location: location
   }, insertLinks);
 }
+
+$(window).on('load', function() {
+  checkAndTriggerLinkInsertion();
+
+  // dynamic script injection
+  // http://stackoverflow.com/questions/9515704/building-a-chrome-extension-inject-code-in-a-page-using-a-content-script/9517879
+  var script = document.createElement('script');
+  script.textContent = '(' + function() {
+    $(document).on('pjax:complete', function() {
+      window.postMessage({type: 'PJAX'}, '*');
+    });;
+  } + ')();';
+  (document.head||document.documentElement).appendChild(script);
+  script.parentNode.removeChild(script);
+});
+
+window.addEventListener('message', function(event) {
+  if (event.origin !== 'https://github.com')
+    return;
+  if (event.source !== window)
+    return;
+  if (event.data.type === 'PJAX') {
+    checkAndTriggerLinkInsertion();
+  }
+})
 
 function insertLinks(response) {
   if (!response) console.log(chrome.runtime.lastError);
