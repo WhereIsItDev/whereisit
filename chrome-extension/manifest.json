@@ -17,7 +17,7 @@
 
   "background": {
     "scripts": [
-      "jquery-2.1.4.js",
+      "jquery-2.1.4.min.js",
       "shared.js",
       "utils/browser-action.js",
       "background.js",
