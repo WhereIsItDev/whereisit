@@ -1,0 +1,5 @@
+2015-08-09
+==========
+
+* Support GitHub's pjax loading, previously navigating to other code files will result in the extension not loading, user has to refresh the page for extension to work. This fix adds a couple of event listeners to automatically insert links when the pjax calls end
+* Bump to v0.2.3
