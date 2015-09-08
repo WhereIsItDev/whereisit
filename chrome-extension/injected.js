@@ -148,7 +148,7 @@ function linkUpMethods(msg_tags) {
   function linkTag(tag, textNode) {
     var url = makeLink(tag.filepath, window.location.href, tag.linenum);
     var span = breakTextAt(
-      textNode, new RegExp("\\b" + tag.tagname + '\\b', "g"));
+      textNode, new RegExp("\\b" + tag.tagname + '\\b'));
     if (!span) return; // TODO(ngzhian) method call in method call on same line
     var a = makeAhref(url, span.firstChild.data);
     span.replaceChild(a, span.firstChild);
